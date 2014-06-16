@@ -1033,12 +1033,12 @@ function recv(data){
             }
     }
 }
-
+var connections=new Object();
 //送信
 function send(to_pid,message,pram){
     var conn;
-    conn=peer.connect(to_pid);
-    conn.on('open', function() {
+    if(connections[to_pid]&&connections[to_pid].open){
+        conn=connections[to_pid];
         var obj=new Object();
         obj.pid=from_pid;
         obj.message=message;
@@ -1057,13 +1057,39 @@ function send(to_pid,message,pram){
         }
         // メッセージを送信
         conn.send(obj);
-    });
-    conn.on('error', function() {
-        disconnect();
-        if(window.console){
-            window.console.log('error');
-        }
-    });
+        return;
+    }else{
+        conn=peer.connect(to_pid);
+        connections[to_pid]=conn;
+        conn.on('open', function() {
+            var obj=new Object();
+            obj.pid=from_pid;
+            obj.message=message;
+            user_name=$("#user_name").val();
+            if (user_name.match(/[A-Z\d\-]/)) {
+                obj.name=user_name;
+            }else{
+                obj.name="Anonymous Player";
+            }
+            if(message==COLAMONE_FACE){
+                obj.face=pram;
+            }
+            if(message==COLAMONE_PLAYING||message==COLAMONE_LETSGO){
+                obj.map=thisMap;
+                obj.turn=turn_player;
+            }
+            // メッセージを送信
+            conn.send(obj);
+        });
+        conn.on('error', function() {
+            disconnect();
+            if(window.console){
+                window.console.log('error');
+            }
+        });
+    }
+    
+
 
 
        
