@@ -280,9 +280,11 @@ function shuffleBoard(){
 function getMousePosition(e) {  
 	if(!e.clientX){//SmartPhone
         if(e.touches){
-            e = e.touches[0];            
+            e = e.originalEvent.touches[0];            
+        }else if(e.originalEvent.touches){
+            e = e.originalEvent.touches[0];
         }else{
-            e = event.touches[0];            
+            e = event.touches[0];
         }
     }
     var rect = e.target.getBoundingClientRect();
@@ -824,6 +826,7 @@ var MES_YOUWIN={"en":"You win.","ja":"あなたの勝ちです。"};
 var MES_YOULOSE={"en":"You lose.","ja":"あなたの負けです。"};
 var MES_YOUTURN={"en":"It's your turn.","ja":"あなたのターンです。"};
 var MES_OTHERTURN={"en":"It's @ turn.","ja":"相手のターンです。"};
+var MES_PLAYER_COUNT={"en":"Players:@","ja":"現在の参加者:@"};
 
 
 var status=STATUS_NONE;
@@ -1139,6 +1142,7 @@ function offerALL(){
                 }
             }
         }
+        printMes(MES_PLAYER_COUNT,json.length);
     });
 }
 //メッセージを表示
@@ -1153,7 +1157,7 @@ function printMes(message,param){
      $('#logmessage').val(logmsg);   
 }
 //メッセージを表示
-function printMes2(message,param){
+function printMes2(message){
     var date = new Date();
     var yyyymmdd=date.getFullYear()  + "/" + (date.getMonth() + 1) + "/" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
     var logmsg=yyyymmdd+": "+message+"\n"+$('#logmessage').val();
@@ -1191,8 +1195,8 @@ function sendface(event){
     }
 }
 function blink(){
-    $("#main").css("background-color", "#00FF00");
+    $("#main").css("background-color", "#FFFFFF");
     setTimeout(function(){
-        $("#main").css("background-color", "#FFFFFF");
+        $("#main").css("background-color", "");
     },77)   
 }
