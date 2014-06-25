@@ -90,7 +90,6 @@ var thisMap={  0:-1,10:-2,20:-3,30:-4,40:-5,50:-6,
 var initMap=copyMap(thisMap);
 var mouse_x =0;
 var mouse_y =0;
-var storage = localStorage;
 var startMap;
 
 
@@ -140,7 +139,6 @@ $(function(){
         $("#canv").bind('mousemove ',ev_mouseMove)
         $("#canv").bind('mouseup',ev_mouseClick);
     }
-    $("input[name='level']").bind('click',ev_radioChange);
     $("#disconnect").bind('click',disconnect);
     $("#initpeer").bind('click',init_peer);
     $("#face1").bind('click',sendface);
@@ -153,23 +151,6 @@ $(function(){
     $( window ).unload(disconnect);
     shuffleBoard();
     
-    //連勝記録初期化
-    if(!storage.getItem('level_1')){
-        storage.setItem('level_1',0);
-    }
-    if(!storage.getItem('level_2')){
-        storage.setItem('level_2',0);
-    }
-    if(!storage.getItem('level_3')){
-        storage.setItem('level_3',0);
-    }
-    //レベル記憶
-    if(storage.getItem('level_save')!=undefined && storage.getItem('level_save')!="undefined"){
-         $('input[name=level]').val([ parseInt(storage.getItem('level_save')) ]); 
-    }else{
-        storage.setItem('level_save',2);
-         $('input[name=level]').val([2]); 
-    }
     
     
     //パラメータを取得
@@ -242,15 +223,7 @@ function ev_mouseClick(e){
 //    updateMessage();
     flush();
 }
-function ev_radioChange(){
-    var num = $("input[name='level']:checked").val();
-    storage.setItem('level_save',num);
-    if(storage.getItem('level_'+num)>0){
-        $("#wins")[0].innerHTML=storage.getItem('level_'+num)+" win!";
-    }else{
-        $("#wins")[0].innerHTML="";
-    }
-}
+
 
 //盤面をシャッフル
 function shuffleBoard(){
@@ -588,25 +561,15 @@ function updateMessage(){
     
     if(winner==me_player){
         message="You Win!"
-        storage.setItem('level_'+$("input[name='level']:checked").val(),
-                       parseInt(storage.getItem('level_'+$("input[name='level']:checked").val()))+1);
         endgame();
         printMes(MES_YOUWIN);
     }else if(winner==-1*me_player){
         message="You Lose..."
-        storage.setItem('level_'+$("input[name='level']:checked").val(),0);
         endgame();
         printMes(MES_YOULOSE);
     }else if(winner==0){
         message="-- Draw --"
         endgame();
-    }
-    
-
-    if(storage.getItem('level_'+$("input[name='level']:checked").val())>0){
-        $("#wins")[0].innerHTML=storage.getItem('level_'+$("input[name='level']:checked").val())+" win!";
-    }else{
-        $("#wins")[0].innerHTML="";   
     }
    
 }
