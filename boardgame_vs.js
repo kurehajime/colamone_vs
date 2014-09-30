@@ -291,8 +291,21 @@ function flush(){
     //メッセージを描画
     ctx.drawImage(drawOverlay(), 0, 0, ctx.canvas.width, ctx.canvas.height);
     
-    
-    
+    if(status==STATUS_PLAYING){
+        if(turn_player==1){
+            $("body").removeClass("body_0");
+            $("body").addClass("body_1");
+            $("body").removeClass("body_2");
+        }else if(turn_player==-1){
+            $("body").removeClass("body_0");
+            $("body").removeClass("body_1");
+            $("body").addClass("body_2");
+        }
+    }else{
+        $("body").addClass("body_0");
+        $("body").removeClass("body_1");
+        $("body").removeClass("body_2");  
+    }
 }
 //フォーカスを描画
 function drawFocus(){
@@ -773,13 +786,14 @@ var COLAMONE_OK="COLAMONE_OK";//はい、プレイしましょう。
 var COLAMONE_LETSGO="COLAMONE_LETSGO";//じゃあ始めよう。
 var COLAMONE_PLAYING="COLAMONE_PLAYING";//プレイ中
 var COLAMONE_FACE="COLAMONE_FACE";//顔文字
+var COLAMONE_HELLO="COLAMONE_HELLO";//ただ呼んでみただけ。
 
 var STATUS_NONE="STATUS_NONE"//無心
 var STATUS_OFFER="STATUS_OFFER"//今こっちから誘ってる最中。
 var STATUS_PLAYING="STATUS_PLAYING"//今遊んでる最中。誘いには乗りません。
 var STATUS_RETURN="STATUS_RETURN"//今返答して再回答を待ってる最中。誘いには乗りません。
 
-var MES_INIT={"en":"Please join by pressing the Connect button.","ja":"接続ボタンを押してください。"};
+var MES_INIT={"en":"Please join by pressing the Connect button.","ja":"接続ボタンを押してください。↑"};
 var MES_DISCONNECT={"en":"Disconnected.","ja":"切断しました。"};
 var MES_MATCHING={"en":"Searching player.","ja":"対戦相手を探しています。"};
 var MES_CONNECT={"en":"Game with @ begins.","ja":"@との対局を始めます。"};
@@ -809,6 +823,8 @@ var play_conn;
 var peer;
 //接続
 function init_peer(){
+    
+    
     inc_disconnect=inc_disconnect_MAX;
     if(peer&&!peer.disconnected){
         disconnect();
@@ -850,6 +866,7 @@ function init_peer(){
     ObjConnInterval =setInterval(inc, 1000);
     ObjOfferInterval =setInterval(offerloop, 1000+Math.round(Math.random()*500));
     printMes(MES_MATCHING);
+    $("#initpeer").addClass("btnactive");  
 
 }
 function initGame(){
@@ -869,6 +886,10 @@ function inc(){
     if(status==STATUS_PLAYING&&connect_pid!=""&&!peer.connections[connect_pid]){
         connect_pid="";
         disconnect();
+    }else if(status==STATUS_PLAYING&&connect_pid!=""&&peer.connections[connect_pid]){
+        if(inc_disconnect % 5==0){
+            send(connect_pid,COLAMONE_HELLO)//生存確認
+        }
     }
     
 }
@@ -909,7 +930,12 @@ function disconnect(){
     }
     status=STATUS_NONE;
     connect_pid="";
-
+    $("body").addClass("body_0");
+    $("body").removeClass("body_1");
+    $("body").removeClass("body_2");  
+    $("#initpeer").removeClass("btnactive");  
+    
+    
 }
 //受信
 function recv(data){
@@ -1084,6 +1110,7 @@ function clean_connection(){
     if(connect_pid!=""&&!peer.connections[connect_pid]){
         connect_pid="";
         disconnect();
+        
     }
 }
 //みんなを誘う。
