@@ -992,6 +992,9 @@ function recv(data){
             }
             break;
         case STATUS_PLAYING://遊んでる
+            if(data.message==COLAMONE_HELLO){
+                return;
+            }
             if(data.pid==connect_pid && data.message!=COLAMONE_FACE){
                 inc_disconnect=inc_disconnect_MAX;
                 $('#status').text("playing");
