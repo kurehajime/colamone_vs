@@ -1049,11 +1049,7 @@ function send(to_pid,message,pram){
         obj.pid=from_pid;
         obj.message=message;
         user_name=$("#user_name").val();
-        if (user_name.match(/[@_a-zA-Z\d\-]*/)) {
-            obj.name=user_name;
-        }else{
-            obj.name="Anonymous Player";
-        }
+        obj.name=user_name;
         if(message==COLAMONE_FACE){
             obj.face=pram;
         }
@@ -1072,11 +1068,7 @@ function send(to_pid,message,pram){
             obj.pid=from_pid;
             obj.message=message;
             user_name=$("#user_name").val();
-            if (user_name.match(/[@_a-zA-Z\d\-]*/)) {
-                obj.name=user_name;
-            }else{
-                obj.name="Anonymous Player";
-            }
+            obj.name=user_name;
             if(message==COLAMONE_FACE){
                 obj.face=pram;
             }
