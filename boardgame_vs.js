@@ -146,6 +146,7 @@ $(function(){
     $("#face3").bind('click',sendface);
     $("#face4").bind('click',sendface);
     $("#face5").bind('click',sendface);
+    $("#user_name").bind('keypress',ev_delMultiByte);
 
     
     $( window ).unload(disconnect);
@@ -170,7 +171,17 @@ $(function(){
 
 });
 
-
+function ev_delMultiByte(){
+    var str=$("#user_name").val();
+    for(var i=0,len=str.lenght;i<len;i++) {
+        var code = table[str.charCodeAt(i)];
+        if(!(code <= 256 || !code)){
+            $("#user_name").val("Anonymous Player");
+            return;
+        };
+    }    
+    return;
+}
 
 //マウス移動時処理
 function ev_mouseMove(e){
@@ -1038,7 +1049,7 @@ function send(to_pid,message,pram){
         obj.pid=from_pid;
         obj.message=message;
         user_name=$("#user_name").val();
-        if (user_name.match(/[A-Z\d\-]/)) {
+        if (user_name.match(/[@_a-zA-Z\d\-]*/)) {
             obj.name=user_name;
         }else{
             obj.name="Anonymous Player";
@@ -1061,7 +1072,7 @@ function send(to_pid,message,pram){
             obj.pid=from_pid;
             obj.message=message;
             user_name=$("#user_name").val();
-            if (user_name.match(/[A-Z\d\-]/)) {
+            if (user_name.match(/[@_a-zA-Z\d\-]*/)) {
                 obj.name=user_name;
             }else{
                 obj.name="Anonymous Player";
