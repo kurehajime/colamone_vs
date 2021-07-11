@@ -1,0 +1,22 @@
+{
+  "name": "colamone_vs",
+  "version": "1.0.0",
+  "description": "colamone_vs\r ===========\r オンライン対応のボードゲームです。  \r ここで遊べます。  \r http://xiidec.appspot.com/colamone_vs/colamone_vs.html",
+  "main": "boardgame_vs.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kurehajime/colamone_vs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kurehajime/colamone_vs/issues"
+  },
+  "homepage": "https://github.com/kurehajime/colamone_vs#readme",
+  "dependencies": {
+    "http-server": "^0.12.3"
+  }
+}

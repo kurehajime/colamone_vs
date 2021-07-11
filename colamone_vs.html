@@ -1,76 +1,84 @@
 <!DOCTYPE html>
 <HTML>
-    <HEAD>
-        <title>colamone VS β</title>
-        <meta content="text/html" charset="UTF-8">
-        <meta name="viewport" content="width=device-width,user-scalable=no">
-        <link rel="author" href="https://plus.google.com/105626742774793809251" />
-        <link rel="stylesheet" type="text/css" href="boardgame.css">
-        <script src="https://skyway.io/dist/0.3/peer.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script type="text/javascript" src="boardgame_vs.js?2015030504"></script>
-        <script type="text/javascript">
-var peer;
-            function get_lang() {
-                var lng=(navigator.browserLanguage || navigator.language || navigator.userLanguage).substr(0,2).toLowerCase();
-                switch(lng){
-                    case "ja":
-                        return "ja";
-                        break;
-                    default :
-                        return "en";
-                        break;
-                }
-                return 
+
+<HEAD>
+    <title>colamone VS β</title>
+    <meta content="text/html" charset="UTF-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no">
+    <link rel="author" href="https://plus.google.com/105626742774793809251" />
+    <link rel="stylesheet" type="text/css" href="boardgame.css">
+    <script src="//cdn.webrtc.ecl.ntt.com/skyway-4.4.1.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="boardgame_vs.js?2015030504"></script>
+    <script type="text/javascript">
+        var peer;
+        function get_lang() {
+            var lng = (navigator.browserLanguage || navigator.language || navigator.userLanguage).substr(0, 2).toLowerCase();
+            switch (lng) {
+                case "ja":
+                    return "ja";
+                    break;
+                default:
+                    return "en";
+                    break;
             }
-            function set_manual(){
-                if(get_lang()==="ja"){
-                    var manual=document.getElementById("manual");
-                    manual.innerHTML="【ルール】\n\
+            return
+        }
+        function set_manual() {
+            if (get_lang() === "ja") {
+                var manual = document.getElementById("manual");
+                manual.innerHTML = "【ルール】\n\
 ・各コマは、丸が付いている方向に進めます。\n\
 ・一番奥の陣地まで進めると、コマに書かれている数字が得点になります。\n\
 ・得点になったコマは動かすことができません。\n\
 ・得点が8点以上になれば勝利です。\n\
 ・片方の動かせるコマが無くなった時はその時点で点数の高い方が勝利です。";
-                    document.getElementById("initpeer").innerHTML="接続";
-                    document.getElementById("disconnect").innerHTML="切断";
+                document.getElementById("initpeer").innerHTML = "接続";
+                document.getElementById("disconnect").innerHTML = "切断";
 
-                }else{
-                    manual.innerHTML="# How to play Colamone\n\
+            } else {
+                manual.innerHTML = "# How to play Colamone\n\
 * Colamone is a board game similar to chess.\n\
 * Players will be able to advance in the direction of the point of each piece.\n\
 * The number of a piece will be scoring if it advances to the position of the other side most. \n\
 * It is a victory of the player score became 8 or more points.\n\
 * Piece won the scoring can not be moved, it will be invincible.\n\
 * When the movable piece of one is lost, the player high score is winning at that point.";
-                }
-                    
             }
-        </script>
-    </HEAD>
-    <BODY onLoad="set_manual();" class="body_1">
-        <div id="main">
-            <canvas id="canv" width="500px" height="500px"></canvas>
-            <div id="message">
-                <span id="gamename">Colamone VS </span>β  by <A Href="https://twitter.com/kurehajime">@kurehajime</A><br/>
-                <b>Turn : </b><span id="turn"></span>(
-                Blue: <span id="blue"></span> / Red: <span id="red"></span> )<span id="wins"></span> <span id="status"></span>
-                
-                <br/><input type="text" id="user_name" value="Anonymous player"><button type="button" id="initpeer" onclick=""> connect </button><button type="button" id="disconnect" onclick="" > disconnect </button>
-<br/>
-<textarea id="logmessage"></textarea>
-<br/>
-<button type="button" id="face1" onclick="" >(´・ω・｀)</button><button type="button" id="face2" onclick="" >ヽ(ﾟ∀ﾟ)ﾉ</button><button type="button" id="face3" onclick="" >(灬ºωº灬)</button><button type="button" id="face4" onclick="" >(´；ω；｀)</button><button type="button" id="face5" onclick="" >´∀｀)人(´∀｀</button>
-<br/>           
-<pre id="manual"># How to play Colamone
+
+        }
+    </script>
+</HEAD>
+
+<BODY onLoad="set_manual();" class="body_1">
+    <div id="main">
+        <canvas id="canv" width="500px" height="500px"></canvas>
+        <div id="message">
+            <span id="gamename">Colamone VS </span>β by <A Href="https://twitter.com/kurehajime">@kurehajime</A><br />
+            <b>Turn : </b><span id="turn"></span>(
+            Blue: <span id="blue"></span> / Red: <span id="red"></span> )<span id="wins"></span> <span
+                id="status"></span>
+
+            <br /><input type="text" id="user_name" value="Anonymous player"><button type="button" id="initpeer"
+                onclick=""> connect </button><button type="button" id="disconnect" onclick=""> disconnect </button>
+            <br />
+            <textarea id="logmessage"></textarea>
+            <br />
+            <button type="button" id="face1" onclick="">(´・ω・｀)</button><button type="button" id="face2"
+                onclick="">ヽ(ﾟ∀ﾟ)ﾉ</button><button type="button" id="face3" onclick="">(灬ºωº灬)</button><button
+                type="button" id="face4" onclick="">(´；ω；｀)</button><button type="button" id="face5"
+                onclick="">´∀｀)人(´∀｀</button>
+            <br />
+            <pre id="manual"># How to play Colamone
 * Colamone is a board game similar to chess.
 * Players will be able to advance in the direction of the point of each piece.
 * The number of a piece will be scoring if it advances to the position of the other side most. 
 * Piece won the scoring can not be moved, it will be invincible.
 * It is a victory of the player score became 8 or more points.
 * When the movable piece of one is lost, the player high score is winning at that point.</pre>
-                <A Href="http://xiidec.appspot.com/colamone/colamone.html">★マイペースに遊びたい人向けに1人用もあります★</A>
-            </div>
+            <A Href="http://xiidec.appspot.com/colamone/colamone.html">★マイペースに遊びたい人向けに1人用もあります★</A>
         </div>
-    </BODY>
+    </div>
+</BODY>
+
 </HTML>
