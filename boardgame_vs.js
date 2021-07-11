@@ -959,6 +959,7 @@ function recv(data, src) {
                 blink();
             } else if (data.message == COLAMONE_OFFER) {
                 connect_pid = data.pid;
+                thisMap = data.map;
                 send(COLAMONE_OK);//いいよ。
                 status = STATUS_RETURN;
                 inc_timeout = inc_timeout_MAX;
@@ -991,11 +992,13 @@ function recv(data, src) {
             if (data.message == COLAMONE_HELLO) {
                 return;
             }
-            if (data.pid == connect_pid && data.message != COLAMONE_FACE) {
+            if (data.pid == connect_pid && data.message != COLAMONE_FACE && data.message != COLAMONE_NO) {
                 inc_disconnect = inc_disconnect_MAX;
                 $('#status').text("playing");
+
                 thisMap = data.map;
                 turn_player = data.turn * -1;
+
                 message = ""
                 thinking = false;
                 updateMessage();
