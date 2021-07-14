@@ -1,36 +1,36 @@
 //"use strict"
-var ctx = null;
-var isTouch = true;
-var canv_board = null;
-var canv_board2 = null;
-var canv_focus = null;
-var canv_pieces = null;
-var canv_hover_piece = null;
-var canv_overlay = null;
-var hover_piece = null;
-var cellSize = null;
-var turn_player = null;
-var blueScore = 0;
-var redScore = 0;
-var winner = null;
-var isDraw = false;
-var message = "";
-var thinking = true;
-var apikey = "";
-var COLOR_LINE = "#333333";
-var COLOR_PANEL_1 = "#550025";
-var COLOR_PANEL_2 = "#003856";
-var COLOR_PANEL_3 = "#FFFFFF";
-var COLOR_PANEL_4 = "#111111";
-var COLOR_PANEL_5 = "#444444";
-var COLOR_PANEL_6 = "#888888";
+let ctx = null;
+let isTouch = true;
+let canv_board = null;
+let canv_board2 = null;
+let canv_focus = null;
+let canv_pieces = null;
+let canv_hover_piece = null;
+let canv_overlay = null;
+let hover_piece = null;
+let cellSize = null;
+let turn_player = null;
+let blueScore = 0;
+let redScore = 0;
+let winner = null;
+let isDraw = false;
+let message = "";
+let thinking = true;
+let apikey = "";
+let COLOR_LINE = "#333333";
+let COLOR_PANEL_1 = "#550025";
+let COLOR_PANEL_2 = "#003856";
+let COLOR_PANEL_3 = "#FFFFFF";
+let COLOR_PANEL_4 = "#111111";
+let COLOR_PANEL_5 = "#444444";
+let COLOR_PANEL_6 = "#888888";
 
-var COLOR_SELECT = "#88FF88";
-var COLOR_RED = "#E5004F";
-var COLOR_BLUE = "#00A0E9";
-var COLOR_WHITE = "#FFFFFF";
-var COLOR_GOLD = "#FFFF00";
-var PIECES = {
+let COLOR_SELECT = "#88FF88";
+let COLOR_RED = "#E5004F";
+let COLOR_BLUE = "#00A0E9";
+let COLOR_WHITE = "#FFFFFF";
+let COLOR_GOLD = "#FFFF00";
+let PIECES = {
     "1": [1, 1, 1,
         1, 0, 1,
         1, 1, 1],
@@ -80,7 +80,7 @@ var PIECES = {
         0, 0, 0,
         0, 1, 0]
 }
-var zeroMap = {
+let zeroMap = {
     0: -1, 10: -2, 20: -3, 30: -4, 40: -5, 50: -6,
     1: 0, 11: -8, 21: 0, 31: 0, 41: -7, 51: 0,
     2: 0, 12: 0, 22: 0, 32: 0, 42: 0, 52: 0,
@@ -88,7 +88,7 @@ var zeroMap = {
     4: 0, 14: 7, 24: 0, 34: 0, 44: 8, 54: 0,
     5: 6, 15: 5, 25: 4, 35: 3, 45: 2, 55: 1,
 }
-var thisMap = {
+let thisMap = {
     0: -1, 10: -2, 20: -3, 30: -4, 40: -5, 50: -6,
     1: 0, 11: -8, 21: 0, 31: 0, 41: -7, 51: 0,
     2: 0, 12: 0, 22: 0, 32: 0, 42: 0, 52: 0,
@@ -96,10 +96,10 @@ var thisMap = {
     4: 0, 14: 7, 24: 0, 34: 0, 44: 8, 54: 0,
     5: 6, 15: 5, 25: 4, 35: 3, 45: 2, 55: 1,
 }
-var initMap = copyMap(thisMap);
-var mouse_x = 0;
-var mouse_y = 0;
-var startMap;
+let initMap = copyMap(thisMap);
+let mouse_x = 0;
+let mouse_y = 0;
+let startMap;
 
 
 //init
@@ -164,7 +164,7 @@ $(function () {
 
 
     //パラメータを取得
-    var paramObj = getParam();
+    let paramObj = getParam();
     //盤面を初期化
     if (paramObj["init"]) {
         startMap = getMapByParam(paramObj["init"]);
@@ -180,9 +180,9 @@ $(function () {
 });
 
 function ev_delMultiByte() {
-    var str = $("#user_name").val();
-    for (var i = 0, len = str.lenght; i < len; i++) {
-        var code = table[str.charCodeAt(i)];
+    let str = $("#user_name").val();
+    for (let i = 0, len = str.lenght; i < len; i++) {
+        let code = table[str.charCodeAt(i)];
         if (!(code <= 256 || !code)) {
             $("#user_name").val("Anonymous Player");
             return;
@@ -199,7 +199,7 @@ function ev_mouseMove(e) {
 //マウスクリック時処理
 function ev_mouseClick(e) {
     getMousePosition(e);
-    var target = Math.floor(mouse_x / cellSize) * 10
+    let target = Math.floor(mouse_x / cellSize) * 10
         + Math.floor(mouse_y / cellSize)
     if (thinking == true) {
         return true;
@@ -220,7 +220,7 @@ function ev_mouseClick(e) {
             flush();
             return;
         }
-        var canm = getCanMovePanel(hover_piece);
+        let canm = getCanMovePanel(hover_piece);
         if (canm.indexOf(target) >= 0) {
             thisMap[target] = thisMap[hover_piece];
             thisMap[hover_piece] = 0;
@@ -248,22 +248,22 @@ function ev_mouseClick(e) {
 function shuffleBoard() {
     thisMap = copyMap(zeroMap);
     //クリア
-    for (var num in thisMap) {
+    for (let num in thisMap) {
         thisMap[num] = 0;
     }
-    var arr = [1, 2, 3, 4, 5, 6, 7, 8];
-    var red_num = [0, 10, 20, 30, 40, 50, 11, 41];
-    var blue_num = [55, 45, 35, 25, 15, 5, 44, 14];
-    for (var i = 0; i <= 666; i++) {
+    let arr = [1, 2, 3, 4, 5, 6, 7, 8];
+    let red_num = [0, 10, 20, 30, 40, 50, 11, 41];
+    let blue_num = [55, 45, 35, 25, 15, 5, 44, 14];
+    for (let i = 0; i <= 666; i++) {
         arr.sort(function () {
             return Math.random() - Math.random();
         });
     }
 
-    for (var num in blue_num) {
+    for (let num in blue_num) {
         thisMap[blue_num[num]] = arr[num];
     }
-    for (var num in red_num) {
+    for (let num in red_num) {
         thisMap[red_num[num]] = -1 * arr[num];
     }
 }
@@ -280,13 +280,13 @@ function getMousePosition(e) {
             e = event.touches[0];
         }
     }
-    var rect = e.target.getBoundingClientRect();
+    let rect = e.target.getBoundingClientRect();
     mouse_x = e.clientX - rect.left;
     mouse_y = e.clientY - rect.top;
 }
 //画面描画
 function flush() {
-    var wkMap = $.extend(true, {}, thisMap)
+    let wkMap = $.extend(true, {}, thisMap)
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
 
     //盤面を描画
@@ -330,9 +330,9 @@ function flush() {
 //フォーカスを描画
 function drawFocus() {
     //選択マスを強調
-    var x = mouse_x - (mouse_x % cellSize);
-    var y = mouse_y - (mouse_y % cellSize);
-    var ctx_focus = canv_focus.getContext('2d');
+    let x = mouse_x - (mouse_x % cellSize);
+    let y = mouse_y - (mouse_y % cellSize);
+    let ctx_focus = canv_focus.getContext('2d');
     ctx_focus.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
     ctx_focus.globalAlpha = 0.5;
     ctx_focus.fillStyle = COLOR_SELECT;
@@ -345,10 +345,10 @@ function drawFocus() {
     }
 
     //移動可能マスを強調
-    var target = (x / cellSize) * 10 + (y / cellSize);
+    let target = (x / cellSize) * 10 + (y / cellSize);
     if (thisMap[target] * turn_player > 0) {
-        var canm = getCanMovePanel(target)
-        for (var i = 0; i <= canm.length - 1; i++) {
+        let canm = getCanMovePanel(target)
+        for (let i = 0; i <= canm.length - 1; i++) {
             x = Math.floor(canm[i] / 10);
             y = Math.floor(canm[i] % 10);
             ctx_focus.strokeStyle = COLOR_SELECT;
@@ -366,17 +366,17 @@ function drawFocus() {
 
 //盤面を描画してCANVASオブジェクトを返す。
 function drawBoard() {
-    var ctx_board = canv_board.getContext('2d');
+    let ctx_board = canv_board.getContext('2d');
     ctx_board.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
 
-    var grad = ctx_board.createLinearGradient(0, 0, ctx.canvas.width, ctx.canvas.width);
+    let grad = ctx_board.createLinearGradient(0, 0, ctx.canvas.width, ctx.canvas.width);
     grad.addColorStop(0, COLOR_PANEL_6);
     grad.addColorStop(0.3, COLOR_PANEL_5);
     grad.addColorStop(1, COLOR_PANEL_4);
 
 
-    for (var x = 0; x < 6; x++) {
-        for (var y = 0; y < 6; y++) {
+    for (let x = 0; x < 6; x++) {
+        for (let y = 0; y < 6; y++) {
             //パネル描画
             ctx_board.strokeStyle = COLOR_LINE;
             if (y == 0) {
@@ -398,7 +398,7 @@ function drawBoard() {
     return canv_board;
 }
 function drawBoard2() {
-    var ctx_board2 = canv_board2.getContext('2d');
+    let ctx_board2 = canv_board2.getContext('2d');
     ctx_board2.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
     ctx_board2.globalAlpha = 0.07;
     ctx_board2.fillStyle = COLOR_WHITE;
@@ -410,10 +410,10 @@ function drawBoard2() {
 }
 //浮遊しているコマを描画する。
 function drawHoverPiece() {
-    var ctx_hover = canv_hover_piece.getContext('2d');
+    let ctx_hover = canv_hover_piece.getContext('2d');
     ctx_hover.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
-    var x = mouse_x - (cellSize / 2)
-    var y = mouse_y - (cellSize / 2)
+    let x = mouse_x - (cellSize / 2)
+    let y = mouse_y - (cellSize / 2)
     if (hover_piece != null) {
         drawPiece(ctx_hover, x, y, thisMap[hover_piece]
             , false)
@@ -422,7 +422,7 @@ function drawHoverPiece() {
 }
 //コマを描画する。
 function drawPiece(wkCtx, x, y, number, goal) {
-    var wkColor;
+    let wkColor;
 
     //外枠を描画
     if (number == 0) {
@@ -433,7 +433,7 @@ function drawPiece(wkCtx, x, y, number, goal) {
         wkColor = COLOR_RED;
     }
     //wkCtx.fillStyle = wkColor;
-    var grad = ctx.createLinearGradient(x, y, x + cellSize, y + cellSize);
+    let grad = ctx.createLinearGradient(x, y, x + cellSize, y + cellSize);
     grad.addColorStop(0, 'rgb(255, 255, 255)');
     grad.addColorStop(0.4, wkColor);
     grad.addColorStop(1, wkColor);
@@ -452,7 +452,7 @@ function drawPiece(wkCtx, x, y, number, goal) {
 
 
 
-    var fontsize = Math.round(cellSize * 0.18);
+    let fontsize = Math.round(cellSize * 0.18);
     wkCtx.textBaseline = "middle";
     wkCtx.textAlign = "center";
     wkCtx.font = fontsize + "pt Arial";
@@ -463,12 +463,12 @@ function drawPiece(wkCtx, x, y, number, goal) {
 
 
     //点を描画
-    for (var i = 0; i <= PIECES[number].length - 1; i++) {
+    for (let i = 0; i <= PIECES[number].length - 1; i++) {
         if (PIECES[number][i] == 0) {
             continue;
         }
-        var x_dot = x + cellSize / 4.16 + (Math.floor(cellSize - 1 * cellSize / 5) / 3) * Math.floor(i % 3.0);
-        var y_dot = y + cellSize / 4.16 + (Math.floor(cellSize - 1 * cellSize / 5) / 3) * Math.floor(i / 3.0);
+        let x_dot = x + cellSize / 4.16 + (Math.floor(cellSize - 1 * cellSize / 5) / 3) * Math.floor(i % 3.0);
+        let y_dot = y + cellSize / 4.16 + (Math.floor(cellSize - 1 * cellSize / 5) / 3) * Math.floor(i / 3.0);
 
         if (goal) {
             wkCtx.fillStyle = COLOR_GOLD;
@@ -486,12 +486,12 @@ function drawPiece(wkCtx, x, y, number, goal) {
 }
 //コマをすべて描画
 function drawPieceAll(wkMap) {
-    var ctx_pieces = canv_pieces.getContext('2d');
+    let ctx_pieces = canv_pieces.getContext('2d');
     ctx_pieces.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
-    for (var x = 0; x < 6; x++) {
-        for (var y = 0; y < 6; y++) {
+    for (let x = 0; x < 6; x++) {
+        for (let y = 0; y < 6; y++) {
             if (wkMap[x * 10 + y] != 0) {
-                var goal = false;
+                let goal = false;
                 if (y * cellSize, wkMap[x * 10 + y] > 0 & y == 0) {
                     goal = true;
                 } else if (y * cellSize, wkMap[x * 10 + y] < 0 & y == 5) {
@@ -507,9 +507,9 @@ function drawPieceAll(wkMap) {
 
 //メッセージを描画
 function drawOverlay() {
-    var ctx_overlay = canv_overlay.getContext('2d');
-    var x = cellSize * 1.5
-    var y = cellSize * 2.5
+    let ctx_overlay = canv_overlay.getContext('2d');
+    let x = cellSize * 1.5
+    let y = cellSize * 2.5
 
     ctx_overlay.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
 
@@ -522,7 +522,7 @@ function drawOverlay() {
     ctx_overlay.fillRect(x, y, cellSize * 3, cellSize * 1);
     ctx_overlay.fill();
 
-    var fontsize = Math.round(cellSize * 0.36);
+    let fontsize = Math.round(cellSize * 0.36);
     ctx_overlay.font = "bold " + fontsize + "px sans-serif";
     ctx_overlay.globalAlpha = 1;
     ctx_overlay.fillStyle = COLOR_LINE;
@@ -537,10 +537,10 @@ function drawOverlay() {
 
 //動かせるマスを返す。Return:[NN,NN,NN]
 function getCanMovePanel(panel_num) {
-    var number = thisMap[panel_num];
-    var x = Math.floor(panel_num / 10);
-    var y = Math.floor(panel_num % 10);
-    var canMove = new Array;
+    let number = thisMap[panel_num];
+    let x = Math.floor(panel_num / 10);
+    let y = Math.floor(panel_num % 10);
+    let canMove = new Array;
     if (number == 0) {
         return canMove;
     }
@@ -551,9 +551,9 @@ function getCanMovePanel(panel_num) {
         return canMove;
     }
 
-    for (var i = 0; i <= PIECES[number].length - 1; i++) {
-        var target_x = x + Math.floor(i % 3) - 1;
-        var target_y = y + Math.floor(i / 3) - 1;
+    for (let i = 0; i <= PIECES[number].length - 1; i++) {
+        let target_x = x + Math.floor(i % 3) - 1;
+        let target_y = y + Math.floor(i / 3) - 1;
 
         if (PIECES[number][i] == 0) {
             continue;
@@ -561,7 +561,7 @@ function getCanMovePanel(panel_num) {
         if (target_x < 0 || target_y < 0 | target_x > 5 | target_y > 5) {
             continue;
         }
-        var target_number = thisMap[target_x * 10 + target_y];
+        let target_number = thisMap[target_x * 10 + target_y];
         if (target_number * number > 0) {
             continue;
         }
@@ -611,17 +611,17 @@ function endgame() {
 }
 
 function calcScore() {
-    var sum1 = 0;
-    var sum2 = 0;
-    var GoalTop = [0, 10, 20, 30, 40, 50];
-    var GoalBottom = [5, 15, 25, 35, 45, 55];
+    let sum1 = 0;
+    let sum2 = 0;
+    let GoalTop = [0, 10, 20, 30, 40, 50];
+    let GoalBottom = [5, 15, 25, 35, 45, 55];
     //点数勝利        
-    for (var i in GoalTop) {
+    for (let i in GoalTop) {
         if (thisMap[GoalTop[i]] * 1 > 0) {
             sum1 += thisMap[GoalTop[i]];
         }
     }
-    for (var i in GoalBottom) {
+    for (let i in GoalBottom) {
         if (thisMap[GoalBottom[i]] * -1 > 0) {
             sum2 += thisMap[GoalBottom[i]];
         }
@@ -655,13 +655,13 @@ function isEnd(wkMap) {
 }
 //手詰まり判定
 function isNoneNode(wkMap) {
-    var flag1 = false;
-    var flag2 = false;
-    for (var panel_num in wkMap) {
+    let flag1 = false;
+    let flag2 = false;
+    for (let panel_num in wkMap) {
         if (wkMap[panel_num] == 0) {
             continue;
         }
-        var canMove = getCanMovePanelX(panel_num, wkMap, false);
+        let canMove = getCanMovePanelX(panel_num, wkMap, false);
         if (canMove.length != 0) {
             if (wkMap[panel_num] > 0) {
                 flag1 = true;
@@ -678,13 +678,13 @@ function isNoneNode(wkMap) {
 
 //パラメータ取得
 function getParam() {
-    var obj = new Object();
+    let obj = new Object();
     if (1 < document.location.search.length) {
-        var paramstr = document.location.search.substring(1).split('&');
-        for (var i = 0; i < paramstr.length; i++) {
-            var entry = paramstr[i].split('=');
-            var key = decodeURIComponent(entry[0]);
-            var value = decodeURIComponent(entry[1]);
+        let paramstr = document.location.search.substring(1).split('&');
+        for (let i = 0; i < paramstr.length; i++) {
+            let entry = paramstr[i].split('=');
+            let key = decodeURIComponent(entry[0]);
+            let value = decodeURIComponent(entry[1]);
             obj[key] = decodeURIComponent(value);
         }
     }
@@ -692,23 +692,23 @@ function getParam() {
 }
 function getMapByParam(initString) {
     if (initString) {
-        var wkMap = copyMap(thisMap);
+        let wkMap = copyMap(thisMap);
         //クリア
-        for (var num in wkMap) {
+        for (let num in wkMap) {
             wkMap[num] = 0;
         }
-        var arr = initString.split(',');
+        let arr = initString.split(',');
         if (arr.length < 8) {
             arr = [1, 2, 3, 4, 5, 6, 7, 8];
         }
-        var red_num = [0, 10, 20, 30, 40, 50, 11, 41];
-        var blue_num = [55, 45, 35, 25, 15, 5, 44, 14];
+        let red_num = [0, 10, 20, 30, 40, 50, 11, 41];
+        let blue_num = [55, 45, 35, 25, 15, 5, 44, 14];
 
 
-        for (var num in blue_num) {
+        for (let num in blue_num) {
             wkMap[blue_num[num]] = parseInt(arr[num]);
         }
-        for (var num in red_num) {
+        for (let num in red_num) {
             wkMap[red_num[num]] = -1 * parseInt(arr[num]);
         }
     }
@@ -716,7 +716,7 @@ function getMapByParam(initString) {
     return wkMap;
 }
 function copyMap(wkMap) {
-    var rtnMap = new Object();
+    let rtnMap = new Object();
     //不格好だがループするより高速。
     rtnMap[0] = wkMap[0];
     rtnMap[10] = wkMap[10];
@@ -758,10 +758,10 @@ function copyMap(wkMap) {
 }
 //動かせるマスを返す。Return:[NN,NN,NN...]
 function getCanMovePanelX(panel_num, wkMap) {
-    var number = wkMap[panel_num];
-    var x = Math.floor(panel_num / 10);
-    var y = Math.floor(panel_num % 10);
-    var canMove = new Array;
+    let number = wkMap[panel_num];
+    let x = Math.floor(panel_num / 10);
+    let y = Math.floor(panel_num % 10);
+    let canMove = new Array;
     if (number === 0) {
         return canMove;
     }
@@ -771,17 +771,17 @@ function getCanMovePanelX(panel_num, wkMap) {
     } else if (number < 0 && y === 5) {
         return canMove;
     }
-    for (var i = 0; i < PIECES[number].length; i++) {
+    for (let i = 0; i < PIECES[number].length; i++) {
         if (PIECES[number][i] === 0) {
             continue;
         }
-        var target_x = x + Math.floor(i % 3) - 1;
-        var target_y = y + Math.floor(i / 3) - 1;
+        let target_x = x + Math.floor(i % 3) - 1;
+        let target_y = y + Math.floor(i / 3) - 1;
         if (target_y < 0 || target_y > 5 || target_x > 5 || target_x < 0) {
             continue;
         }
-        var idx = target_x * 10 + target_y;
-        var target_number = wkMap[idx];
+        let idx = target_x * 10 + target_y;
+        let target_number = wkMap[idx];
 
         //自コマとアガリのコマはとったらダメ。
         if ((target_number * number > 0) || (target_number > 0 && target_y === 0) || (target_number < 0 && target_y === 5)) {

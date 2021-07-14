@@ -7,62 +7,62 @@ D「はい、プレイしましょう」
 A「Dさん、お前とは嫌だ。」
 A「Cさん、じゃあ始めよう。」
 */
-var COLAMONE_OFFER = "COLAMONE_OFFER";//一緒に遊ばない？
-var COLAMONE_NO = "COLAMONE_NO";//やだ。(他の人とプレイ中…など)
-var COLAMONE_OK = "COLAMONE_OK";//はい、プレイしましょう。
-var COLAMONE_LETSGO = "COLAMONE_LETSGO";//じゃあ始めよう。
-var COLAMONE_PLAYING = "COLAMONE_PLAYING";//プレイ中
-var COLAMONE_FACE = "COLAMONE_FACE";//顔文字
-var COLAMONE_HELLO = "COLAMONE_HELLO";//ただ呼んでみただけ。
+let COLAMONE_OFFER = "COLAMONE_OFFER";//一緒に遊ばない？
+let COLAMONE_NO = "COLAMONE_NO";//やだ。(他の人とプレイ中…など)
+let COLAMONE_OK = "COLAMONE_OK";//はい、プレイしましょう。
+let COLAMONE_LETSGO = "COLAMONE_LETSGO";//じゃあ始めよう。
+let COLAMONE_PLAYING = "COLAMONE_PLAYING";//プレイ中
+let COLAMONE_FACE = "COLAMONE_FACE";//顔文字
+let COLAMONE_HELLO = "COLAMONE_HELLO";//ただ呼んでみただけ。
 
-var STATUS_NONE = "STATUS_NONE"//無心
-var STATUS_OFFER = "STATUS_OFFER"//今こっちから誘ってる最中。
-var STATUS_PLAYING = "STATUS_PLAYING"//今遊んでる最中。誘いには乗りません。
-var STATUS_RETURN = "STATUS_RETURN"//今返答して再回答を待ってる最中。誘いには乗りません。
+let STATUS_NONE = "STATUS_NONE"//無心
+let STATUS_OFFER = "STATUS_OFFER"//今こっちから誘ってる最中。
+let STATUS_PLAYING = "STATUS_PLAYING"//今遊んでる最中。誘いには乗りません。
+let STATUS_RETURN = "STATUS_RETURN"//今返答して再回答を待ってる最中。誘いには乗りません。
 
-var MES_INIT = { "en": "Please join by pressing the Connect button.", "ja": "接続ボタンを押してください。↑" };
-var MES_DISCONNECT = { "en": "Disconnected.", "ja": "切断しました。" };
-var MES_MATCHING = { "en": "Searching player.", "ja": "対戦相手を探しています。" };
-var MES_CONNECT = { "en": "Game with @ begins.", "ja": "@との対局を始めます。" };
-var MES_YOUBLUE = { "en": "You are Blue.", "ja": "あなたは青です。" };
-var MES_YOURED = { "en": "You are Red.", "ja": "あなたは赤です。" };
-var MES_YOUWIN = { "en": "You win.", "ja": "あなたの勝ちです。" };
-var MES_YOULOSE = { "en": "You lose.", "ja": "あなたの負けです。" };
-var MES_YOUTURN = { "en": "It's your turn.", "ja": "あなたのターンです。" };
-var MES_OTHERTURN = { "en": "It's @ turn.", "ja": "相手のターンです。" };
-var MES_PLAYER_COUNT = { "en": "Players:@", "ja": "現在の参加者:@" };
+let MES_INIT = { "en": "Please join by pressing the Connect button.", "ja": "接続ボタンを押してください。↑" };
+let MES_DISCONNECT = { "en": "Disconnected.", "ja": "切断しました。" };
+let MES_MATCHING = { "en": "Searching player.", "ja": "対戦相手を探しています。" };
+let MES_CONNECT = { "en": "Game with @ begins.", "ja": "@との対局を始めます。" };
+let MES_YOUBLUE = { "en": "You are Blue.", "ja": "あなたは青です。" };
+let MES_YOURED = { "en": "You are Red.", "ja": "あなたは赤です。" };
+let MES_YOUWIN = { "en": "You win.", "ja": "あなたの勝ちです。" };
+let MES_YOULOSE = { "en": "You lose.", "ja": "あなたの負けです。" };
+let MES_YOUTURN = { "en": "It's your turn.", "ja": "あなたのターンです。" };
+let MES_OTHERTURN = { "en": "It's @ turn.", "ja": "相手のターンです。" };
+let MES_PLAYER_COUNT = { "en": "Players:@", "ja": "現在の参加者:@" };
 
 
-var status = STATUS_NONE;
-var connect_pid = "";
-var inc_disconnect_MAX = 300;
-var inc_disconnect = 300;
-var inc_timeout_MAX = 6;
-var inc_timeout = 6;
-var inc_offer = 0;
-var ObjConnInterval;
-var ObjOfferInterval;
-var other_player_name;
-var me_player = 1;
-var play_conn;
-var peer;
-var room;
+let status = STATUS_NONE;
+let connect_pid = "";
+let inc_disconnect_MAX = 300;
+let inc_disconnect = 300;
+let inc_timeout_MAX = 6;
+let inc_timeout = 6;
+let inc_offer = 0;
+let ObjConnInterval;
+let ObjOfferInterval;
+let other_player_name;
+let me_player = 1;
+let play_conn;
+let room;
+let peer;
 //init
 $(function () {
     //初期化
-    const peer = (window.peer = new Peer({
+    peer = new Peer({
         key: "12c750c6-e688-43ed-9786-cf68767d6e96",
         debug: 3,
-    }));
+    });
 });
 
 //接続
 function init_peer() {
     inc_disconnect = inc_disconnect_MAX;
     status = STATUS_OFFER;
-    const room = (window.room = peer.joinRoom("ROOM_ID", {
+    room = peer.joinRoom("ROOM_ID", {
         mode: "mesh"
-    }));
+    });
 
     room.once('open', () => {
         $('#status').text("Connect...");
@@ -235,10 +235,10 @@ function recv(data, src) {
             }
     }
 }
-var connections = new Object();
+let connections = new Object();
 //送信
 function send(message, pram) {
-    var obj = new Object();
+    let obj = new Object();
     obj.pid = peer.id;
     obj.message = message;
     obj.name = $("#user_name").val();
@@ -260,27 +260,27 @@ function offerALL() {
 }
 //メッセージを表示
 function printMes(message, param) {
-    var date = new Date();
-    var yyyymmdd = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
-    var mes = message[get_lang()];
+    let date = new Date();
+    let yyyymmdd = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
+    let mes = message[get_lang()];
     if (param != undefined && mes != undefined) {
         mes = mes.replace("@", param);
     }
-    var logmsg = yyyymmdd + ": " + mes + "\n" + $('#logmessage').val();
+    let logmsg = yyyymmdd + ": " + mes + "\n" + $('#logmessage').val();
     $('#logmessage').val(logmsg);
 }
 //メッセージを表示
 function printMes2(message) {
-    var date = new Date();
-    var yyyymmdd = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
-    var logmsg = yyyymmdd + ": " + message + "\n" + $('#logmessage').val();
+    let date = new Date();
+    let yyyymmdd = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
+    let logmsg = yyyymmdd + ": " + message + "\n" + $('#logmessage').val();
     $('#logmessage').val(logmsg);
 }
 //顔文字を送る。
 function sendface(event) {
     if (status == STATUS_PLAYING) {
-        var id = $(event.target).attr('id');
-        var faceid = 0;
+        let id = $(event.target).attr('id');
+        let faceid = 0;
         switch (id) {
             case "face1":
                 faceid = 1;
