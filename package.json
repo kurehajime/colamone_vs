@@ -1,12 +1,10 @@
 {
   "name": "colamone_vs",
-  "version": "1.1.0",
-  "description": "colamone_vs - online board game (SkyWay removed, WebSocket relay)",
+  "version": "1.0.0",
+  "description": "colamone_vs\r ===========\r オンライン対応のボードゲームです。  \r ここで遊べます。  \r http://xiidec.appspot.com/colamone_vs/colamone_vs.html",
   "main": "boardgame_vs.js",
   "scripts": {
-    "start": "http-server -p 8081",
-    "relay": "node server.js",
-    "dev": "npm run relay"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -19,7 +17,6 @@
   },
   "homepage": "https://github.com/kurehajime/colamone_vs#readme",
   "dependencies": {
-    "http-server": "^0.12.3",
-    "ws": "^8.18.3"
+    "http-server": "^0.12.3"
   }
 }
