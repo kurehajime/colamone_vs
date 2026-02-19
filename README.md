@@ -28,12 +28,18 @@ gcloud run deploy colamone-vs \
 ### 自動デプロイ（main/master マージ時）
 
 `.github/workflows/deploy-cloud-run.yml` を追加済みです。  
-有効化に必要な GitHub Secrets:
+初回セットアップは以下を1回実行:
+
+```bash
+PROJECT_ID=xiidec REPO=kurehajime/colamone_vs ./scripts/setup-github-oidc.sh
+```
+
+スクリプト実行後に表示される2つを GitHub Actions Secrets に登録:
 
 - `GCP_WORKLOAD_IDENTITY_PROVIDER`
 - `GCP_SERVICE_ACCOUNT`
 
-この2つを設定すると、`master` への push（PRマージ含む）で Cloud Run に自動デプロイされます。
+これで `master` への push（PRマージ含む）で Cloud Run に自動デプロイされます。
 
 デプロイ後のURLでそのままプレイ可能です。
 
