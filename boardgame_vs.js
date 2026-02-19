@@ -181,7 +181,7 @@ $(function () {
 
 function ev_delMultiByte() {
     let str = $("#user_name").val();
-    for (let i = 0, len = str.lenght; i < len; i++) {
+    for (let i = 0, len = str.length; i < len; i++) {
         let code = table[str.charCodeAt(i)];
         if (!(code <= 256 || !code)) {
             $("#user_name").val("Anonymous Player");
@@ -492,9 +492,9 @@ function drawPieceAll(wkMap) {
         for (let y = 0; y < 6; y++) {
             if (wkMap[x * 10 + y] != 0) {
                 let goal = false;
-                if (y * cellSize, wkMap[x * 10 + y] > 0 & y == 0) {
+                if (y * cellSize, wkMap[x * 10 + y] > 0 && y == 0) {
                     goal = true;
-                } else if (y * cellSize, wkMap[x * 10 + y] < 0 & y == 5) {
+                } else if (y * cellSize, wkMap[x * 10 + y] < 0 && y == 5) {
                     goal = true;
                 }
                 ctx_pieces = drawPiece(ctx_pieces, x * cellSize
@@ -545,9 +545,9 @@ function getCanMovePanel(panel_num) {
         return canMove;
     }
     //アガリのコマは動かしたらダメ。
-    if (number > 0 & y == 0) {
+    if (number > 0 && y == 0) {
         return canMove;
-    } else if (number < 0 & y == 5) {
+    } else if (number < 0 && y == 5) {
         return canMove;
     }
 
@@ -558,7 +558,7 @@ function getCanMovePanel(panel_num) {
         if (PIECES[number][i] == 0) {
             continue;
         }
-        if (target_x < 0 || target_y < 0 | target_x > 5 | target_y > 5) {
+        if (target_x < 0 || target_y < 0 || target_x > 5 || target_y > 5) {
             continue;
         }
         let target_number = thisMap[target_x * 10 + target_y];
@@ -566,9 +566,9 @@ function getCanMovePanel(panel_num) {
             continue;
         }
         //アガリのコマはとったらダメ。
-        if (target_number > 0 & target_y == 0) {
+        if (target_number > 0 && target_y == 0) {
             continue;
-        } else if (target_number < 0 & target_y == 5) {
+        } else if (target_number < 0 && target_y == 5) {
             continue;
         }
         canMove.push(target_x * 10 + target_y);
