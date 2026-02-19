@@ -14,6 +14,8 @@ npm run dev
 
 ## Cloud Run deploy
 
+### 手動デプロイ
+
 ```bash
 gcloud config set project xiidec
 
@@ -22,6 +24,16 @@ gcloud run deploy colamone-vs \
   --region asia-northeast1 \
   --allow-unauthenticated
 ```
+
+### 自動デプロイ（main/master マージ時）
+
+`.github/workflows/deploy-cloud-run.yml` を追加済みです。  
+有効化に必要な GitHub Secrets:
+
+- `GCP_WORKLOAD_IDENTITY_PROVIDER`
+- `GCP_SERVICE_ACCOUNT`
+
+この2つを設定すると、`master` への push（PRマージ含む）で Cloud Run に自動デプロイされます。
 
 デプロイ後のURLでそのままプレイ可能です。
 
