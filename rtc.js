@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 // Transport layer (SkyWay-free)
-// - Default: static-safe local mode
-// - Optional: WebSocket relay when ?ws=ws(s)://... is provided
+// - Default: WebSocket relay server
+// - Fallback: local single-player style handoff (same browser)
 
 let COLAMONE_OFFER = "COLAMONE_OFFER";
 let COLAMONE_NO = "COLAMONE_NO";
@@ -48,7 +48,8 @@ function getWsUrl() {
     if (p.ws) {
         return p.ws;
     }
-    return null;
+    let proto = location.protocol === "https:" ? "wss" : "ws";
+    return `${proto}://${location.hostname}:8080`;
 }
 
 function initGame() {
@@ -222,20 +223,6 @@ function init_peer() {
     }
 
     $("#initpeer").addClass("btnactive");
-
-    let wsUrl = getWsUrl();
-    if (!wsUrl) {
-        // Static-safe default: local mode only.
-        transport = createLocalTransport();
-        transport.connect().then(() => {
-            $("#status").text("local");
-            printMes2("[local mode] running without relay server.");
-            startPlayingAsBlue("Local CPU");
-            send(COLAMONE_LETSGO);
-        });
-        return;
-    }
-
     $("#status").text("connecting...");
     printMes(MES_MATCHING);
 
@@ -246,10 +233,9 @@ function init_peer() {
         // Fallback to local mode so the game remains playable.
         transport = createLocalTransport();
         transport.connect().then(() => {
-            $("#status").text("local");
             startPlayingAsBlue("Local CPU");
             send(COLAMONE_LETSGO);
-            printMes2("[local mode] relay unreachable, switched to local mode.");
+            printMes2("[local mode] WebSocket relay not found. Started fallback mode.");
         });
     });
 }
