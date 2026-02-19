@@ -1,23 +1,25 @@
 {
   "name": "colamone_vs",
-  "version": "1.0.0",
-  "description": "colamone_vs\r ===========\r オンライン対応のボードゲームです。  \r ここで遊べます。  \r http://xiidec.appspot.com/colamone_vs/colamone_vs.html",
-  "main": "boardgame_vs.js",
+  "version": "1.1.0",
+  "description": "colamone_vs on Next.js + Cloud Run",
+  "private": true,
   "scripts": {
-    "start": "http-server -p 8080",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p ${PORT:-8080}"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kurehajime/colamone_vs.git"
   },
-  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/kurehajime/colamone_vs/issues"
   },
   "homepage": "https://github.com/kurehajime/colamone_vs#readme",
   "dependencies": {
-    "http-server": "^0.12.3"
+    "next": "14.2.32",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   }
 }

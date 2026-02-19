@@ -1,0 +1,134 @@
+html{
+    	height: 100%;
+}
+.body_0 {
+	margin: 0 auto;
+	padding: 0;
+	display: table;
+    
+    background: #FFFFFF;/*Old Browsers*/
+    background: url(data:image/svg+xml;base64,...);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #CCCCCC), color-stop(100%, #FFFFFF));
+    background: -webkit-linear-gradient(top, #CCCCCC, #FFFFFF);
+    background:    -moz-linear-gradient(top, #CCCCCC, #FFFFFF);
+    background:         linear-gradient(to bottom, #CCCCCC, #FFFFFF);
+    
+}
+.body_1 {
+	margin: 0 auto;
+	padding: 0;
+	display: table;
+    
+    background: #FFFFFF;/*Old Browsers*/
+    background: url(data:image/svg+xml;base64,...);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #FFFFFF), color-stop(100%, #BBFFFF));
+    background: -webkit-linear-gradient(top, #FFFFFF, #BBFFFF);
+    background:    -moz-linear-gradient(top, #FFFFFF, #BBFFFF);
+    background:         linear-gradient(to bottom, #FFFFFF, #BBFFFF);
+    
+}
+
+.body_2 {
+	margin: 0 auto;
+	padding: 0;
+	display: table;
+    
+    background: #FFFFFF;/*Old Browsers*/
+    background: url(data:image/svg+xml;base64,...);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #FFCCFF), color-stop(100%, #FFFFFF));
+    background: -webkit-linear-gradient(top, #FFCCFF, #FFFFFF);
+    background:    -moz-linear-gradient(top, #FFCCFF, #FFFFFF);
+    background:         linear-gradient(to bottom, #FFCCFF, #FFFFFF);
+    
+}
+
+
+
+
+
+#main{
+
+    display: table-cell; 
+    vertical-align: middle;
+    text-align:middle;
+}
+#canv{
+    height: 500px;
+    width: 500px;
+    float: left;
+}
+#message{
+    float: left;
+    background-color: "#FFFFFF";
+    font-size: 14px;
+    margin-left: 5px;
+}
+#wins{
+color: #16b1db;
+}
+#gamename{
+    font-size: 30px;
+}
+#manual{
+    font-size: 12px;
+}
+div#message input:checked + label {
+    background:rgb(247, 225, 225);
+    font-weight:bold;
+}
+
+#initpeer,#disconnect {
+    width: 100px;
+    font-size: 16px;
+    color: #fff;
+
+    border-style: none;
+
+    box-shadow: 2px 2px 3px 1px #666;
+    -moz-box-shadow: 2px 2px 3px 1px #666;
+    -webkit-box-shadow: 2px 2px 3px 1px #666;
+
+
+    text-shadow: 1px 1px 2px #000;
+
+    /* 角丸の指定 */
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+#initpeer{
+    background: -moz-linear-gradient(bottom, #4ddd33, #228849 50%, #4ddd33);
+    background: -webkit-gradient(linear, left bottom, left top, from(#4ddd33), color-stop(0.5, #228849), to(#4ddd33));
+}
+#disconnect{
+    background: -moz-linear-gradient(bottom, #dbdbdb, #888 50%, #dbdbdb);
+    background: -webkit-gradient(linear, left bottom, left top, from(#dbdbdb), color-stop(0.5, #888), to(#dbdbdb));
+}
+#initpeer:hover,#disconnect:hover {
+    opacity: 0.8;
+}
+.btnactive{
+    color: #d9ff00 !important;
+
+}
+
+
+#face1,#face2,#face3,#face4,#face5{
+    width: 82px;
+    font-size: 9px;
+    height: 25px;
+}
+#user_name{
+    width: 200px;
+    font-size: 16px;
+    ime-mode: disabled;
+}
+#logmessage{
+    width: 400px;
+    height: 220px;
+    font-size: 12px;
+}
+#offline{
+    margin-left: 5px;
+    color: "#ff6900";
+}
