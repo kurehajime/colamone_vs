@@ -1,5 +1,17 @@
-colamone_vs (工事中…)
+colamone_vs
 ===========
-オンライン対応のボードゲームです。  
-ここで遊べます。  
-http://xiidec.appspot.com/colamone_vs/colamone_vs.html
+
+オンライン対応のボードゲームです。
+
+## Play (GitHub Pages)
+
+https://kurehajime.github.io/colamone_vs/colamone_vs.html
+
+## 開発
+
+```bash
+npm install
+npm start
+```
+
+ローカルで `http://localhost:8080/colamone_vs.html` を開いて確認できます。
