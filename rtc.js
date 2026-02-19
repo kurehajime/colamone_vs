@@ -47,19 +47,18 @@ let me_player = 1;
 let play_conn;
 let room;
 let peer;
-//init
-$(function () {
-    //初期化
+
+function createPeer() {
     peer = new Peer({
         key: "12c750c6-e688-43ed-9786-cf68767d6e96",
         debug: 3,
     });
-});
+    peer.on('error', function (e) {
+        console.log(e.message);
+    });
+}
 
-//接続
-function init_peer() {
-    inc_disconnect = inc_disconnect_MAX;
-    status = STATUS_OFFER;
+function joinRoomAndBind() {
     room = peer.joinRoom("ROOM_ID", {
         mode: "mesh"
     });
@@ -68,13 +67,36 @@ function init_peer() {
         $('#status').text("Connect...");
     });
 
-    peer.on('error', function (e) {
-        console.log(e.message);
-    });
-
     room.on('data', ({ data, src }) => {
         recv(data, src)
     });
+}
+
+//init
+$(function () {
+    createPeer();
+});
+
+//接続
+function init_peer() {
+    inc_disconnect = inc_disconnect_MAX;
+    status = STATUS_OFFER;
+
+    if (!peer || peer.disconnected || peer.destroyed) {
+        createPeer();
+    }
+
+    if (peer.open) {
+        joinRoomAndBind();
+    } else {
+        $('#status').text("connecting...");
+        peer.once('open', () => {
+            joinRoomAndBind();
+        });
+        peer.once('error', () => {
+            $('#status').text("connect error");
+        });
+    }
 
     inc_offer = 0;
     connect_pid = "";
@@ -127,7 +149,9 @@ function offerloop() {
 function disconnect() {
     if (peer) {
         if (!peer.disconnected) {
-            room.close();
+            if (room) {
+                room.close();
+            }
             $('#status').text("disconnect");
             printMes(MES_DISCONNECT);
             shuffleBoard();
