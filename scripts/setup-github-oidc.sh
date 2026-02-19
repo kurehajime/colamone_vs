@@ -46,15 +46,24 @@ gcloud iam workload-identity-pools describe "$POOL_ID" --location=global >/dev/n
     --location=global \
     --display-name="GitHub Actions Pool" >/dev/null
 
-echo "==> Creating OIDC provider (if missing)"
-gcloud iam workload-identity-pools providers describe "$PROVIDER_ID" \
-  --location=global --workload-identity-pool="$POOL_ID" >/dev/null 2>&1 || \
+echo "==> Creating/updating OIDC provider"
+if gcloud iam workload-identity-pools providers describe "$PROVIDER_ID" \
+  --location=global --workload-identity-pool="$POOL_ID" >/dev/null 2>&1; then
+  gcloud iam workload-identity-pools providers update-oidc "$PROVIDER_ID" \
+    --location=global \
+    --workload-identity-pool="$POOL_ID" \
+    --issuer-uri="https://token.actions.githubusercontent.com" \
+    --attribute-mapping="google.subject=assertion.sub,attribute.repository=assertion.repository,attribute.ref=assertion.ref" \
+    --attribute-condition="assertion.repository=='${REPO}'" >/dev/null
+else
   gcloud iam workload-identity-pools providers create-oidc "$PROVIDER_ID" \
     --location=global \
     --workload-identity-pool="$POOL_ID" \
     --display-name="GitHub Provider" \
     --issuer-uri="https://token.actions.githubusercontent.com" \
-    --attribute-mapping="google.subject=assertion.sub,attribute.repository=assertion.repository,attribute.ref=assertion.ref" >/dev/null
+    --attribute-mapping="google.subject=assertion.sub,attribute.repository=assertion.repository,attribute.ref=assertion.ref" \
+    --attribute-condition="assertion.repository=='${REPO}'" >/dev/null
+fi
 
 echo "==> Granting workload identity user binding"
 gcloud iam service-accounts add-iam-policy-binding "$SA_EMAIL" \
