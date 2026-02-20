@@ -50,7 +50,7 @@ let skywayContext;
 let localMember;
 let localDataStream;
 
-const ROOM_NAME = "ROOM_ID";
+const ROOM_NAME = "colamone-vs-room";
 
 function resetPeerState() {
     peer = {
@@ -118,9 +118,8 @@ async function joinRoomAndBind() {
         name: ROOM_NAME,
     });
 
-    localMember = await room.join({
-        name: $("#user_name").val(),
-    });
+    // name は文字種制限で invalidParameter になりやすいため、SDK側の自動IDを使う
+    localMember = await room.join();
     peer.id = localMember.id;
 
     localDataStream = await sdk.SkyWayStreamFactory.createDataStream();
