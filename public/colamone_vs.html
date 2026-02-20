@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<HTML>
+<html>
 
-<HEAD>
+<head>
     <title>colamone VS β</title>
     <meta content="text/html" charset="UTF-8">
     <meta name="viewport" content="width=device-width,user-scalable=no">
@@ -17,16 +17,13 @@
             switch (lng) {
                 case "ja":
                     return "ja";
-                    break;
                 default:
                     return "en";
-                    break;
             }
-            return
         }
         function set_manual() {
+            var manual = document.getElementById("manual");
             if (get_lang() === "ja") {
-                var manual = document.getElementById("manual");
                 manual.innerHTML = "【ルール】\n\
 ・各コマは、丸が付いている方向に進めます。\n\
 ・一番奥の陣地まで進めると、コマに書かれている数字が得点になります。\n\
@@ -35,50 +32,76 @@
 ・片方の動かせるコマが無くなった時はその時点で点数の高い方が勝利です。";
                 document.getElementById("initpeer").innerHTML = "接続";
                 document.getElementById("disconnect").innerHTML = "切断";
-
             } else {
                 manual.innerHTML = "# How to play Colamone\n\
 * Colamone is a board game similar to chess.\n\
 * Players will be able to advance in the direction of the point of each piece.\n\
-* The number of a piece will be scoring if it advances to the position of the other side most. \n\
+* The number of a piece will be scoring if it advances to the position of the other side most.\n\
 * It is a victory of the player score became 8 or more points.\n\
 * Piece won the scoring can not be moved, it will be invincible.\n\
 * When the movable piece of one is lost, the player high score is winning at that point.";
             }
-
         }
     </script>
-</HEAD>
+</head>
 
-<BODY onLoad="set_manual();" class="body_1">
-    <div id="main">
-        <canvas id="canv" width="500px" height="500px"></canvas>
-        <div id="message">
-            <span id="gamename">Colamone VS </span>β by <A Href="https://twitter.com/kurehajime">@kurehajime</A><br />
-            <b>Turn : </b><span id="turn"></span>(
-            Blue: <span id="blue"></span> / Red: <span id="red"></span> )<span id="wins"></span> <span
-                id="status"></span>
+<body onload="set_manual();" class="body_1">
+    <span id="dialogue"></span>
+    <span id="dialogue2"></span>
 
-            <br /><input type="text" id="user_name" value="Anonymous player"><button type="button" id="initpeer"
-                onclick=""> connect </button><button type="button" id="disconnect" onclick=""> disconnect </button>
-            <br />
-            <textarea id="logmessage"></textarea>
-            <br />
-            <button type="button" id="face1" onclick="">(´・ω・｀)</button><button type="button" id="face2"
-                onclick="">ヽ(ﾟ∀ﾟ)ﾉ</button><button type="button" id="face3" onclick="">(灬ºωº灬)</button><button
-                type="button" id="face4" onclick="">(´；ω；｀)</button><button type="button" id="face5"
-                onclick="">´∀｀)人(´∀｀</button>
-            <br />
-            <pre id="manual"># How to play Colamone
+    <div id="page">
+        <div id="main">
+            <div id="canvWrap">
+                <canvas id="canv" width="500" height="500"></canvas>
+            </div>
+
+            <div id="message">
+                <div id="head">
+                    <span id="gamename">Colamone VS</span> β by
+                    <a href="https://twitter.com/kurehajime">@kurehajime</a><br />
+                    <b>Turn:</b> <span id="turn"></span>
+                    <span class="score">Blue: <span id="blue"></span> / Red: <span id="red"></span></span>
+                    <span id="wins"></span> <span id="status"></span>
+                </div>
+
+                <div id="connectionRow">
+                    <input type="text" id="user_name" value="Anonymous player">
+                    <button type="button" id="initpeer" onclick="">connect</button>
+                    <button type="button" id="disconnect" onclick="">disconnect</button>
+                </div>
+
+                <textarea id="logmessage"></textarea>
+
+                <div id="faceRow">
+                    <button type="button" id="face1" onclick="">(´・ω・｀)</button><button type="button" id="face2"
+                        onclick="">ヽ(ﾟ∀ﾟ)ﾉ</button><button type="button" id="face3" onclick="">(灬ºωº灬)</button><button
+                        type="button" id="face4" onclick="">(´；ω；｀)</button><button type="button" id="face5"
+                        onclick="">ヽ(´∀｀)人(´∀｀)ﾉ</button>
+                </div>
+
+                <div id="collapsible">
+                    <h5 class="howtoplay"><span id="htp">How to play</span></h5>
+                    <pre id="manual"># How to play Colamone
 * Colamone is a board game similar to chess.
 * Players will be able to advance in the direction of the point of each piece.
-* The number of a piece will be scoring if it advances to the position of the other side most. 
+* The number of a piece will be scoring if it advances to the position of the other side most.
 * Piece won the scoring can not be moved, it will be invincible.
 * It is a victory of the player score became 8 or more points.
 * When the movable piece of one is lost, the player high score is winning at that point.</pre>
-            <A Href="http://xiidec.appspot.com/colamone/colamone.html">★マイペースに遊びたい人向けに1人用もあります★</A>
+                </div>
+
+                <a id="singlePlay" href="http://xiidec.appspot.com/colamone/colamone.html">★マイペースに遊びたい人向けに1人用もあります★</a>
+            </div>
         </div>
     </div>
-</BODY>
 
-</HTML>
+    <div id="footer">
+        <p>(c)2014–<span id="year"></span> <a href="https://twitter.com/kurehajime">@kurehajime</a></p>
+    </div>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear().toString();
+    </script>
+</body>
+
+</html>

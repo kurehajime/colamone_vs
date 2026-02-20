@@ -3,6 +3,8 @@
 colamone_vs を **Next.js + Cloud Run** で動かす構成です。  
 マルチプレイ通信は legacy `skyway-js v4 Peer` から **SkyWay SDK v2 (`@skyway-sdk/room`)** に移行済みです。
 
+> UI デザイン/コンポーネント構成は `kurehajime/colamone_js` をベースに寄せています（wasm 移行は行わず、既存 JS ロジックのまま）。
+
 ## Local
 
 ```bash

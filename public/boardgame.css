@@ -1,134 +1,290 @@
-html{
-    	height: 100%;
+/* UI refreshed to follow colamone_js design language while keeping legacy IDs/logic */
+@font-face {
+  font-family: 'Play';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Play Regular'), local('Play-Regular');
 }
+
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: #202020;
+  font-family: 'Play', system-ui, -apple-system, sans-serif;
+  -webkit-text-size-adjust: 100%;
+  margin: 0;
+  min-height: 100%;
+  background-size: 10px 10px;
+  background-color: #f3f3f3;
+  background-image: linear-gradient(-45deg, #f9f9f9 25%, transparent 25%, transparent 50%, #f9f9f9 50%, #f9f9f9 75%, transparent 75%, transparent);
+}
+
 .body_0 {
-	margin: 0 auto;
-	padding: 0;
-	display: table;
-    
-    background: #FFFFFF;/*Old Browsers*/
-    background: url(data:image/svg+xml;base64,...);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #CCCCCC), color-stop(100%, #FFFFFF));
-    background: -webkit-linear-gradient(top, #CCCCCC, #FFFFFF);
-    background:    -moz-linear-gradient(top, #CCCCCC, #FFFFFF);
-    background:         linear-gradient(to bottom, #CCCCCC, #FFFFFF);
-    
+  background-image: linear-gradient(-45deg, #f6f6f6 25%, transparent 25%, transparent 50%, #f6f6f6 50%, #f6f6f6 75%, transparent 75%, transparent);
 }
+
 .body_1 {
-	margin: 0 auto;
-	padding: 0;
-	display: table;
-    
-    background: #FFFFFF;/*Old Browsers*/
-    background: url(data:image/svg+xml;base64,...);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #FFFFFF), color-stop(100%, #BBFFFF));
-    background: -webkit-linear-gradient(top, #FFFFFF, #BBFFFF);
-    background:    -moz-linear-gradient(top, #FFFFFF, #BBFFFF);
-    background:         linear-gradient(to bottom, #FFFFFF, #BBFFFF);
-    
+  background-image: linear-gradient(-45deg, #eef9ff 25%, transparent 25%, transparent 50%, #eef9ff 50%, #eef9ff 75%, transparent 75%, transparent);
 }
 
 .body_2 {
-	margin: 0 auto;
-	padding: 0;
-	display: table;
-    
-    background: #FFFFFF;/*Old Browsers*/
-    background: url(data:image/svg+xml;base64,...);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #FFCCFF), color-stop(100%, #FFFFFF));
-    background: -webkit-linear-gradient(top, #FFCCFF, #FFFFFF);
-    background:    -moz-linear-gradient(top, #FFCCFF, #FFFFFF);
-    background:         linear-gradient(to bottom, #FFCCFF, #FFFFFF);
-    
+  background-image: linear-gradient(-45deg, #fff0f8 25%, transparent 25%, transparent 50%, #fff0f8 50%, #fff0f8 75%, transparent 75%, transparent);
 }
 
-
-
-
-
-#main{
-
-    display: table-cell; 
-    vertical-align: middle;
-    text-align:middle;
+#dialogue {
+  box-sizing: border-box;
+  position: fixed;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 116px;
+  background: linear-gradient(120deg, #1f5eff 0%, #26c1ff 40%, #8a66ff 100%);
+  animation: huerotator 30s infinite alternate;
 }
-#canv{
-    height: 500px;
-    width: 500px;
-    float: left;
+
+#dialogue2 {
+  box-sizing: border-box;
+  position: fixed;
+  z-index: -2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
-#message{
-    float: left;
-    background-color: "#FFFFFF";
+
+@keyframes huerotator {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+#page {
+  display: flex;
+  justify-content: center;
+  padding: 14px 10px 42px;
+}
+
+#main {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+#canvWrap {
+  border-radius: 5px;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.85);
+  user-select: none;
+}
+
+#canv {
+  height: 500px;
+  width: 500px;
+  display: block;
+}
+
+#message {
+  font-size: 14px;
+  max-width: 360px;
+  color: #fff;
+  text-shadow: 0 0 18px rgba(40, 55, 70, 0.28);
+}
+
+#head {
+  min-height: 74px;
+  margin-bottom: 4px;
+}
+
+#gamename {
+  font-size: 38px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(10, 10, 10, 0.3);
+}
+
+#message a {
+  color: #fff;
+}
+
+.score {
+  margin-left: 8px;
+  letter-spacing: 1px;
+}
+
+#turn { font-weight: 700; }
+#wins { color: #ffe16f; font-weight: 700; }
+#status { margin-left: 8px; font-weight: 700; }
+
+#connectionRow {
+  display: flex;
+  gap: 8px;
+  margin: 6px 0;
+}
+
+#user_name {
+  flex: 1;
+  min-width: 140px;
+  height: 40px;
+  font-size: 15px;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.2);
+  padding: 0 12px;
+}
+
+#initpeer, #disconnect {
+  width: 100px;
+  height: 40px;
+  font-size: 14px;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.2);
+}
+
+#initpeer { background: linear-gradient(-60deg, #66b3ff, #1e90ff); }
+#disconnect { background: linear-gradient(-60deg, #acacac, #777); }
+#initpeer:hover, #disconnect:hover { opacity: 0.9; }
+.btnactive { color: #fffd8a !important; }
+
+#logmessage {
+  width: 100%;
+  height: 184px;
+  font-size: 12px;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.2);
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+#faceRow {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  margin-top: 6px;
+}
+
+#face1, #face2, #face3, #face4, #face5 {
+  height: 28px;
+  font-size: 11px;
+  border: none;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+#collapsible {
+  width: 100%;
+  color: #2c2c2c;
+  margin: 10px 0;
+  background-color: #fff;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.2);
+}
+
+.howtoplay {
+  margin: 0;
+  color: #777;
+  font-size: 20px;
+  padding: 8px 12px;
+  font-weight: normal;
+}
+
+#manual {
+  margin: 0;
+  padding: 0 12px 12px;
+  font-size: 12px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: inherit;
+}
+
+#singlePlay {
+  display: inline-block;
+  margin-top: 4px;
+  text-shadow: none;
+  color: #2a6dcf !important;
+  background: rgba(255,255,255,0.92);
+  border-radius: 3px;
+  padding: 5px 8px;
+}
+
+#footer {
+  border-radius: 5px;
+  background: rgba(99, 99, 99, 0.1);
+  border: 1px solid rgba(233, 233, 233, 1);
+  color: #555;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: calc(100% - 2px);
+  height: 31px;
+}
+
+#footer a { color: #555 !important; }
+#footer > p {
+  line-height: 30px;
+  margin: 0;
+  text-align: center;
+  font-size: 10px;
+}
+
+@media (orientation: portrait), (max-width: 980px) {
+  #dialogue { height: 90px; }
+  #main {
+    display: block;
+    width: min(500px, 100%);
+    margin: 0 auto;
+  }
+
+  #canvWrap, #canv {
+    width: min(500px, 100vw - 16px);
+    height: min(500px, 100vw - 16px);
+  }
+
+  #message {
+    width: 100%;
+    max-width: none;
+    font-size: 18px;
+    margin-top: 8px;
+    text-align: left;
+  }
+
+  #gamename { font-size: 34px; }
+  #connectionRow { flex-wrap: wrap; }
+
+  #user_name {
+    width: 100%;
+    flex-basis: 100%;
+  }
+
+  #initpeer, #disconnect {
+    flex: 1;
+    min-width: 0;
+  }
+
+  #logmessage {
+    height: 156px;
     font-size: 14px;
-    margin-left: 5px;
-}
-#wins{
-color: #16b1db;
-}
-#gamename{
-    font-size: 30px;
-}
-#manual{
-    font-size: 12px;
-}
-div#message input:checked + label {
-    background:rgb(247, 225, 225);
-    font-weight:bold;
-}
+  }
 
-#initpeer,#disconnect {
-    width: 100px;
+  #face1, #face2, #face3, #face4, #face5 {
+    font-size: 10px;
+  }
+
+  #manual {
     font-size: 16px;
-    color: #fff;
+    line-height: 1.6;
+  }
 
-    border-style: none;
-
-    box-shadow: 2px 2px 3px 1px #666;
-    -moz-box-shadow: 2px 2px 3px 1px #666;
-    -webkit-box-shadow: 2px 2px 3px 1px #666;
-
-
-    text-shadow: 1px 1px 2px #000;
-
-    /* 角丸の指定 */
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-}
-#initpeer{
-    background: -moz-linear-gradient(bottom, #4ddd33, #228849 50%, #4ddd33);
-    background: -webkit-gradient(linear, left bottom, left top, from(#4ddd33), color-stop(0.5, #228849), to(#4ddd33));
-}
-#disconnect{
-    background: -moz-linear-gradient(bottom, #dbdbdb, #888 50%, #dbdbdb);
-    background: -webkit-gradient(linear, left bottom, left top, from(#dbdbdb), color-stop(0.5, #888), to(#dbdbdb));
-}
-#initpeer:hover,#disconnect:hover {
-    opacity: 0.8;
-}
-.btnactive{
-    color: #d9ff00 !important;
-
-}
-
-
-#face1,#face2,#face3,#face4,#face5{
-    width: 82px;
-    font-size: 9px;
-    height: 25px;
-}
-#user_name{
-    width: 200px;
-    font-size: 16px;
-    ime-mode: disabled;
-}
-#logmessage{
-    width: 400px;
-    height: 220px;
-    font-size: 12px;
-}
-#offline{
-    margin-left: 5px;
-    color: "#ff6900";
+  #footer {
+    display: none;
+  }
 }
