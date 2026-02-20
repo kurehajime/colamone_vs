@@ -13,40 +13,41 @@ export default function handler(req, res) {
     return res.status(500).json({ error: 'SkyWay env vars are not set' });
   }
 
-  const token = new SkyWayAuthToken({
-    jti: uuidV4(),
-    iat: nowInSec(),
-    exp: nowInSec() + 60 * 60,
-    scope: {
-      app: {
-        id: appId,
-        turn: true,
-        actions: ['read'],
-        channels: [
-          {
-            actions: ['write', 'read', 'create', 'delete', 'updateMetadata'],
-            members: [
-              {
-                actions: ['write', 'create', 'delete', 'updateMetadata', 'signal'],
-                publication: {
-                  actions: ['write', 'create', 'delete', 'updateMetadata', 'enable', 'disable'],
+  try {
+    const token = new SkyWayAuthToken({
+      jti: uuidV4(),
+      iat: nowInSec(),
+      exp: nowInSec() + 60 * 60,
+      scope: {
+        app: {
+          id: appId,
+          turn: true,
+          actions: ['read'],
+          channels: [
+            {
+              name: '*',
+              actions: ['write', 'read', 'create', 'delete', 'updateMetadata'],
+              members: [
+                {
+                  name: '*',
+                  actions: ['write', 'create', 'delete', 'updateMetadata', 'signal'],
+                  publication: {
+                    actions: ['write', 'create', 'delete', 'updateMetadata', 'enable', 'disable'],
+                  },
+                  subscription: {
+                    actions: ['write', 'create', 'delete'],
+                  },
                 },
-                subscription: {
-                  actions: ['write', 'create', 'delete'],
-                },
-              },
-            ],
-            sfuBots: [
-              {
-                actions: ['write', 'create', 'delete'],
-                forwardings: [{ actions: ['write', 'create', 'delete'] }],
-              },
-            ],
-          },
-        ],
+              ],
+            },
+          ],
+        },
       },
-    },
-  }).encode(secret);
+    }).encode(secret);
 
-  return res.status(200).json({ token });
+    return res.status(200).json({ token });
+  } catch (e) {
+    console.error('skyway token generate failed', e);
+    return res.status(500).json({ error: 'SkyWay token generation failed' });
+  }
 }
