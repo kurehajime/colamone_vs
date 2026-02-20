@@ -86,6 +86,7 @@ export default function BoardSvg() {
 
   const map = state.map || {};
   const hoverPiece = state.hoverPiece ?? null;
+  const hoverNumber = state.hoverNumber ?? 0;
   const mouseX = state.mouseX ?? 0;
   const mouseY = state.mouseY ?? 0;
   const highlights = state.highlights || [];
@@ -121,8 +122,8 @@ export default function BoardSvg() {
           return <Piece key={`piece-${idx}`} x={x * CELL} y={y * CELL} number={number} goal={goal} />;
         })}
 
-        {hoverPiece != null && map[hoverPiece] ? (
-          <Piece x={mouseX - CELL / 2} y={mouseY - CELL / 2} number={map[hoverPiece]} goal={false} />
+        {hoverPiece != null && hoverNumber ? (
+          <Piece x={mouseX - CELL / 2} y={mouseY - CELL / 2} number={hoverNumber} goal={false} />
         ) : null}
 
         {state.message ? (

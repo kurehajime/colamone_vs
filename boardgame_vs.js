@@ -212,6 +212,7 @@ function flush() {
     window.__colamoneRenderState = {
         map: wkMap,
         hoverPiece: hover_piece,
+        hoverNumber: hover_piece != null ? thisMap[hover_piece] : 0,
         mouseX: mouse_x,
         mouseY: mouse_y,
         selectedCell,
