@@ -1,4 +1,4 @@
-import GameCanvas from './GameCanvas';
+import GameCanvas from './BoardSvg';
 import Panel from './Panel';
 import Header from './Header';
 import Footer from './Footer';
