@@ -44,58 +44,124 @@ let ObjConnInterval;
 let ObjOfferInterval;
 let other_player_name;
 let me_player = 1;
-let play_conn;
 let room;
 let peer;
+let skywayContext;
+let localMember;
+let localDataStream;
 
-function createPeer() {
-    peer = new Peer({
-        key: "12c750c6-e688-43ed-9786-cf68767d6e96",
-        debug: 3,
-    });
-    peer.on('error', function (e) {
-        console.log(e.message);
-    });
+const ROOM_NAME = "ROOM_ID";
+
+function resetPeerState() {
+    peer = {
+        id: "",
+        open: false,
+        disconnected: true,
+        destroyed: false,
+    };
 }
 
-function joinRoomAndBind() {
-    room = peer.joinRoom("ROOM_ID", {
-        mode: "mesh"
+async function fetchSkyWayToken() {
+    const response = await fetch('/api/skyway/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
     });
 
-    room.once('open', () => {
-        $('#status').text("Connect...");
+    if (!response.ok) {
+        throw new Error('token request failed');
+    }
+
+    const json = await response.json();
+    if (!json.token) {
+        throw new Error('token not found in response');
+    }
+
+    return json.token;
+}
+
+async function createPeer() {
+    const sdk = window.SkyWayRoomSDK;
+    if (!sdk) {
+        throw new Error('SkyWay SDK not loaded');
+    }
+
+    resetPeerState();
+    const token = await fetchSkyWayToken();
+    skywayContext = await sdk.SkyWayContext.Create(token);
+
+    peer.open = true;
+    peer.disconnected = false;
+}
+
+async function subscribeDataPublication(publication) {
+    if (!localMember || !publication || publication.publisher.id === localMember.id) {
+        return;
+    }
+    if (publication.contentType !== 'data') {
+        return;
+    }
+
+    try {
+        const { stream } = await localMember.subscribe(publication.id);
+        stream.onData.add((data) => {
+            recv(data, publication.publisher.id);
+        });
+    } catch (e) {
+        console.log(e?.message || e);
+    }
+}
+
+async function joinRoomAndBind() {
+    const sdk = window.SkyWayRoomSDK;
+    room = await sdk.SkyWayRoom.FindOrCreate(skywayContext, {
+        type: 'p2p',
+        name: ROOM_NAME,
     });
 
-    room.on('data', ({ data, src }) => {
-        recv(data, src)
+    localMember = await room.join({
+        name: $("#user_name").val(),
     });
+    peer.id = localMember.id;
+
+    localDataStream = await sdk.SkyWayStreamFactory.createDataStream();
+    await localMember.publish(localDataStream);
+
+    room.publications.forEach((publication) => {
+        subscribeDataPublication(publication);
+    });
+
+    room.onStreamPublished.add(({ publication }) => {
+        subscribeDataPublication(publication);
+    });
+
+    room.onClosed.add(() => {
+        $('#status').text('disconnect');
+    });
+
+    $('#status').text("Connect...");
 }
 
 //init
 $(function () {
-    createPeer();
+    resetPeerState();
 });
 
 //接続
-function init_peer() {
+async function init_peer() {
     inc_disconnect = inc_disconnect_MAX;
     status = STATUS_OFFER;
 
-    if (!peer || peer.disconnected || peer.destroyed) {
-        createPeer();
-    }
+    try {
+        if (!peer || peer.disconnected || peer.destroyed || !skywayContext) {
+            $('#status').text("connecting...");
+            await createPeer();
+        }
 
-    if (peer.open) {
-        joinRoomAndBind();
-    } else {
-        $('#status').text("connecting...");
-        peer.once('open', () => {
-            joinRoomAndBind();
-        });
-        peer.once('error', () => {
-            $('#status').text("connect error");
-        });
+        await joinRoomAndBind();
+    } catch (e) {
+        console.log(e?.message || e);
+        $('#status').text("connect error");
+        return;
     }
 
     inc_offer = 0;
@@ -147,16 +213,23 @@ function offerloop() {
 }
 //切断
 function disconnect() {
-    if (peer) {
-        if (!peer.disconnected) {
-            if (room) {
-                room.close();
-            }
-            $('#status').text("disconnect");
-            printMes(MES_DISCONNECT);
-            shuffleBoard();
-        }
+    if (room) {
+        room.close().catch((e) => console.log(e?.message || e));
     }
+    if (skywayContext) {
+        skywayContext.dispose().catch((e) => console.log(e?.message || e));
+    }
+
+    room = null;
+    skywayContext = null;
+    localMember = null;
+    localDataStream = null;
+    resetPeerState();
+
+    $('#status').text("disconnect");
+    printMes(MES_DISCONNECT);
+    shuffleBoard();
+
     status = STATUS_NONE;
     connect_pid = "";
     turn_player = null;
@@ -262,6 +335,10 @@ function recv(data, src) {
 let connections = new Object();
 //送信
 function send(message, pram) {
+    if (!localDataStream || !peer.id) {
+        return;
+    }
+
     let obj = new Object();
     obj.pid = peer.id;
     obj.message = message;
@@ -274,7 +351,7 @@ function send(message, pram) {
         obj.turn = turn_player;
     }
     // メッセージを送信
-    room.send(obj);
+    localDataStream.write(obj);
 }
 //みんなを誘う。
 function offerALL() {

@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/kurehajime/colamone_vs#readme",
   "dependencies": {
+    "@skyway-sdk/room": "^2.4.0",
+    "@skyway-sdk/token": "^2.1.0",
     "next": "14.2.32",
     "react": "18.3.1",
     "react-dom": "18.3.1"
