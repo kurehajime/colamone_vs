@@ -1,14 +1,7 @@
-/* UI refreshed to follow colamone_js design language while keeping legacy IDs/logic */
-@font-face {
-  font-family: 'Play';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: local('Play Regular'), local('Play-Regular');
-}
+/* Second-pass UI refactor: follows colamone_js layout/components while preserving legacy IDs used by JS runtime */
 
-html {
-  height: 100%;
+html,
+body {
   margin: 0;
   padding: 0;
 }
@@ -17,25 +10,9 @@ body {
   color: #202020;
   font-family: 'Play', system-ui, -apple-system, sans-serif;
   -webkit-text-size-adjust: 100%;
-  margin: 0;
-  min-height: 100%;
-  background-size: 10px 10px;
-  background-color: #f3f3f3;
-  background-image: linear-gradient(-45deg, #f9f9f9 25%, transparent 25%, transparent 50%, #f9f9f9 50%, #f9f9f9 75%, transparent 75%, transparent);
 }
 
-.body_0 {
-  background-image: linear-gradient(-45deg, #f6f6f6 25%, transparent 25%, transparent 50%, #f6f6f6 50%, #f6f6f6 75%, transparent 75%, transparent);
-}
-
-.body_1 {
-  background-image: linear-gradient(-45deg, #eef9ff 25%, transparent 25%, transparent 50%, #eef9ff 50%, #eef9ff 75%, transparent 75%, transparent);
-}
-
-.body_2 {
-  background-image: linear-gradient(-45deg, #fff0f8 25%, transparent 25%, transparent 50%, #fff0f8 50%, #fff0f8 75%, transparent 75%, transparent);
-}
-
+/* from colamone_js Header.css (adapted from image asset to gradient) */
 #dialogue {
   box-sizing: border-box;
   position: fixed;
@@ -48,6 +25,16 @@ body {
   animation: huerotator 30s infinite alternate;
 }
 
+@keyframes huerotator {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
 #dialogue2 {
   box-sizing: border-box;
   position: fixed;
@@ -56,23 +43,22 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
+  background-size: 10px 10px;
+  background-color: #f6f6f6;
+  background-image: linear-gradient(-45deg, #f9f9f9 25%, transparent 25%, transparent 50%, #f9f9f9 50%, #f9f9f9 75%, transparent 75%, transparent);
 }
 
-@keyframes huerotator {
-  0% { filter: hue-rotate(0deg); }
-  100% { filter: hue-rotate(360deg); }
-}
-
+/* from colamone_js Colamone.css (adapted to flex) */
 #page {
   display: flex;
   justify-content: center;
-  padding: 14px 10px 42px;
 }
 
 #main {
   display: flex;
-  gap: 12px;
   align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
 }
 
 #canvWrap {
@@ -88,37 +74,56 @@ body {
   display: block;
 }
 
+/* from colamone_js Panel.css + adapted VS controls */
 #message {
   font-size: 14px;
   max-width: 360px;
   color: #fff;
-  text-shadow: 0 0 18px rgba(40, 55, 70, 0.28);
+  text-shadow: 0 0 30px rgba(51, 68, 85, 0.3);
 }
 
 #head {
-  min-height: 74px;
-  margin-bottom: 4px;
+  min-height: 76px;
+}
+
+#head a {
+  color: white;
 }
 
 #gamename {
   font-size: 38px;
-  font-weight: 700;
   color: #fff;
   text-shadow: 0 0 10px rgba(10, 10, 10, 0.3);
-}
-
-#message a {
-  color: #fff;
+  font-weight: bold;
 }
 
 .score {
+  font-size: 15px;
+  letter-spacing: 3px;
   margin-left: 8px;
-  letter-spacing: 1px;
+  font-weight: bold;
 }
 
-#turn { font-weight: 700; }
-#wins { color: #ffe16f; font-weight: 700; }
-#status { margin-left: 8px; font-weight: 700; }
+#blue {
+  color: #ffffff;
+  text-shadow: 0 0 5px rgba(0, 0, 255, 0.5);
+}
+
+#red {
+  color: #ffffff;
+  text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+}
+
+#wins {
+  color: #ffffff;
+  text-shadow: 0 0 5px rgba(255, 255, 0, 0.5);
+  font-weight: bold;
+}
+
+#status {
+  margin-left: 8px;
+  font-weight: bold;
+}
 
 #connectionRow {
   display: flex;
@@ -127,18 +132,19 @@ body {
 }
 
 #user_name {
-  flex: 1;
-  min-width: 140px;
+  width: 180px;
   height: 40px;
   font-size: 15px;
+  color: #333;
   border: none;
   border-radius: 3px;
   box-shadow: 0 3px 4px rgba(0, 0, 0, 0.2);
-  padding: 0 12px;
+  padding: 0 10px;
 }
 
-#initpeer, #disconnect {
-  width: 100px;
+#initpeer,
+#disconnect {
+  width: 80px;
   height: 40px;
   font-size: 14px;
   color: #fff;
@@ -147,13 +153,16 @@ body {
   box-shadow: 0 3px 4px rgba(0, 0, 0, 0.2);
 }
 
-#initpeer { background: linear-gradient(-60deg, #66b3ff, #1e90ff); }
-#disconnect { background: linear-gradient(-60deg, #acacac, #777); }
-#initpeer:hover, #disconnect:hover { opacity: 0.9; }
-.btnactive { color: #fffd8a !important; }
+#initpeer {
+  background: linear-gradient(-60deg, #66b3ff, #1e90ff);
+}
+
+#disconnect {
+  background: linear-gradient(-60deg, #acacac, #777);
+}
 
 #logmessage {
-  width: 100%;
+  width: 340px;
   height: 184px;
   font-size: 12px;
   border: none;
@@ -164,13 +173,18 @@ body {
 }
 
 #faceRow {
+  width: 340px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 4px;
   margin-top: 6px;
 }
 
-#face1, #face2, #face3, #face4, #face5 {
+#face1,
+#face2,
+#face3,
+#face4,
+#face5 {
   height: 28px;
   font-size: 11px;
   border: none;
@@ -179,10 +193,10 @@ body {
 }
 
 #collapsible {
-  width: 100%;
-  color: #2c2c2c;
+  width: 340px;
+  color: rgba(44, 44, 44, 1);
   margin: 10px 0;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 1);
   border: none;
   border-radius: 3px;
   box-shadow: 0 3px 4px rgba(0, 0, 0, 0.2);
@@ -192,30 +206,30 @@ body {
   margin: 0;
   color: #777;
   font-size: 20px;
-  padding: 8px 12px;
+  padding: 8px 10px;
   font-weight: normal;
 }
 
 #manual {
   margin: 0;
-  padding: 0 12px 12px;
+  padding: 0 10px 10px;
   font-size: 12px;
-  line-height: 1.55;
   white-space: pre-wrap;
   word-wrap: break-word;
-  font-family: inherit;
+  line-height: 20px;
 }
 
 #singlePlay {
   display: inline-block;
   margin-top: 4px;
-  text-shadow: none;
   color: #2a6dcf !important;
-  background: rgba(255,255,255,0.92);
+  background: rgba(255, 255, 255, 0.92);
   border-radius: 3px;
   padding: 5px 8px;
+  text-shadow: none;
 }
 
+/* from colamone_js Footer.css */
 #footer {
   border-radius: 5px;
   background: rgba(99, 99, 99, 0.1);
@@ -228,7 +242,10 @@ body {
   height: 31px;
 }
 
-#footer a { color: #555 !important; }
+#footer a {
+  color: #555;
+}
+
 #footer > p {
   line-height: 30px;
   margin: 0;
@@ -237,51 +254,47 @@ body {
 }
 
 @media (orientation: portrait), (max-width: 980px) {
-  #dialogue { height: 90px; }
+  #dialogue {
+    height: 90px;
+  }
+
   #main {
     display: block;
     width: min(500px, 100%);
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  #canvWrap, #canv {
+  #canvWrap,
+  #canv {
     width: min(500px, 100vw - 16px);
     height: min(500px, 100vw - 16px);
   }
 
   #message {
-    width: 100%;
+    width: min(495px, 100%);
     max-width: none;
-    font-size: 18px;
-    margin-top: 8px;
+    font-size: 20px;
     text-align: left;
   }
 
-  #gamename { font-size: 34px; }
-  #connectionRow { flex-wrap: wrap; }
+  #logmessage,
+  #faceRow,
+  #collapsible {
+    width: 100%;
+  }
 
   #user_name {
     width: 100%;
-    flex-basis: 100%;
   }
 
-  #initpeer, #disconnect {
+  #initpeer,
+  #disconnect {
     flex: 1;
-    min-width: 0;
-  }
-
-  #logmessage {
-    height: 156px;
-    font-size: 14px;
-  }
-
-  #face1, #face2, #face3, #face4, #face5 {
-    font-size: 10px;
   }
 
   #manual {
     font-size: 16px;
-    line-height: 1.6;
   }
 
   #footer {
