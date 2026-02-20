@@ -3,7 +3,8 @@
 colamone_vs を **Next.js + Cloud Run** で動かす構成です。  
 マルチプレイ通信は legacy `skyway-js v4 Peer` から **SkyWay SDK v2 (`@skyway-sdk/room`)** に移行済みです。
 
-> UI デザイン/コンポーネント構成は `kurehajime/colamone_js` をベースに寄せています（wasm 移行は行わず、既存 JS ロジックのまま）。
+> UI デザイン/コンポーネント構成は `kurehajime/colamone_js` をベースに寄せています。  
+> wasm への移行は**意図的に行わず**、既存 `boardgame_vs.js` / `rtc.js` ロジックをそのまま活かしています。
 
 ## Local
 
@@ -15,9 +16,23 @@ npm run dev
 # http://localhost:3000
 ```
 
-トップ (`/`) は `/colamone_vs.html` にリダイレクトします。
+トップ (`/`) は Next.js の React UI を直接表示します。  
+互換目的で `/colamone_vs.html`（legacy static entry）も残しています。
 
 ---
+
+## React コンポーネント構成
+
+`pages/index.js` でゲーム画面を React で組み立て、legacy スクリプトが必要とする DOM id を維持しています。
+
+- `components/GameCanvas.js` … 盤面 canvas ラッパー
+- `components/HeaderStatusBar.js` … タイトル/ターン/スコア/接続ステータス
+- `components/Controls.js` … ユーザー名/Connect/Disconnect
+- `components/LogPanel.js` … ログ textarea
+- `components/FaceButtons.js` … 顔文字送信ボタン群
+- `components/RulesPanel.js` … ルール表示
+
+Next.js 側は UI レンダリング担当、`public/boardgame_vs.js` と `public/rtc.js` はゲームロジック/通信担当のまま分離しています。
 
 ## SkyWay 設定
 

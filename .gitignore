@@ -2,6 +2,7 @@
 gulpfile.js
 
 node_modules
+.next
 
 .vscode/tasks.json
 
