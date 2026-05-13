@@ -52,6 +52,17 @@ let localDataStream;
 
 const ROOM_NAME = "colamone-vs-room";
 
+function clearConnectionTimers() {
+    if (ObjConnInterval) {
+        clearInterval(ObjConnInterval);
+        ObjConnInterval = null;
+    }
+    if (ObjOfferInterval) {
+        clearInterval(ObjOfferInterval);
+        ObjOfferInterval = null;
+    }
+}
+
 function resetPeerState() {
     peer = {
         id: "",
@@ -167,12 +178,7 @@ async function init_peer() {
     connect_pid = "";
     turn_player = null;
     initGame();
-    if (ObjConnInterval) {
-        clearTimeout(ObjConnInterval);
-    }
-    if (ObjOfferInterval) {
-        clearTimeout(ObjOfferInterval);
-    }
+    clearConnectionTimers();
     ObjOfferInterval = setInterval(offerloop, 1000 + Math.round(Math.random() * 500));
     printMes(MES_MATCHING);
     $("#initpeer").addClass("btnactive");
@@ -204,14 +210,18 @@ function offerloop() {
         }
         //対戦相手が見つかったら中止。
         if (status == STATUS_PLAYING || status == STATUS_NONE) {
-            clearTimeout(ObjOfferInterval);
+            clearConnectionTimers();
         }
     } else {
-        clearTimeout(ObjOfferInterval);
+        clearConnectionTimers();
     }
 }
 //切断
 function disconnect() {
+    clearConnectionTimers();
+    inc_timeout = inc_timeout_MAX;
+    inc_offer = 0;
+
     if (room) {
         room.close().catch((e) => console.log(e?.message || e));
     }
