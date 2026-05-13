@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Script from 'next/script';
 import Colamone from '../components/Colamone';
@@ -26,6 +26,8 @@ function applyManualLanguage(lang) {
 }
 
 export default function Home() {
+  const [isRtcLoaded, setIsRtcLoaded] = useState(false);
+
   useEffect(() => {
     window.get_lang = getLang;
     applyManualLanguage(getLang());
@@ -43,8 +45,8 @@ export default function Home() {
 
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" strategy="beforeInteractive" />
       <Script type="module" src="/skyway-sdk-loader.js" strategy="afterInteractive" />
-      <Script src="/boardgame_vs.js?202107132000" strategy="afterInteractive" />
-      <Script src="/rtc.js?2026022001" strategy="afterInteractive" />
+      <Script src="/rtc.js?2026022001" strategy="afterInteractive" onLoad={() => setIsRtcLoaded(true)} />
+      {isRtcLoaded ? <Script src="/boardgame_vs.js?202107132000" strategy="afterInteractive" /> : null}
     </>
   );
 }
